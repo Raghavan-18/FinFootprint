@@ -2,9 +2,10 @@ import Card from '../common/Card';
 import TransactionList from '../transactions/TransactionList';
 import Button from '../common/Button';
 import { ArrowRight } from 'lucide-react';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable RecentActivity dashboard component
+ * Reusable RecentActivity dashboard component with localization
  *
  * @param {Object} props
  * @param {Array<Object>} props.transactions
@@ -20,10 +21,12 @@ export function RecentActivity({
   onViewAll,
   className = '',
 }) {
+  const { t } = useLanguage();
+
   return (
     <Card
-      title="Recent Verified Activity"
-      subtitle="Latest incoming & outgoing financial logs with evidence trails"
+      title={t('dashboard.recentActivityTitle')}
+      subtitle={t('dashboard.recentActivitySubtitle')}
       headerAction={
         onViewAll && (
           <Button
@@ -33,7 +36,7 @@ export function RecentActivity({
             rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
             className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold"
           >
-            Full Ledger
+            {t('common.fullLedger')}
           </Button>
         )
       }

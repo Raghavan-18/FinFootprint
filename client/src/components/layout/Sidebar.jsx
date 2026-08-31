@@ -7,6 +7,7 @@ import {
   FileSpreadsheet,
   ShieldCheck,
 } from 'lucide-react';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
  * Reusable Sidebar Navigation Component
@@ -23,13 +24,15 @@ export function Sidebar({
   profile,
   className = '',
 }) {
+  const { t } = useLanguage();
+
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'add-activity', label: 'Add Activity', icon: PlusCircle },
-    { id: 'history', label: 'History & Ledger', icon: Clock },
-    { id: 'analysis', label: 'Risk Analysis', icon: TrendingUp },
-    { id: 'profile', label: 'Profile & Proofs', icon: User },
-    { id: 'lender-report', label: 'Lender Dossier', icon: FileSpreadsheet, badge: 'Prime' },
+    { id: 'dashboard', label: t('navigation.dashboard'), icon: LayoutDashboard },
+    { id: 'add-activity', label: t('navigation.addActivity'), icon: PlusCircle },
+    { id: 'history', label: t('navigation.history'), icon: Clock },
+    { id: 'analysis', label: t('navigation.analysis'), icon: TrendingUp },
+    { id: 'profile', label: t('navigation.profile'), icon: User },
+    { id: 'lender-report', label: t('navigation.lenderReport'), icon: FileSpreadsheet, badge: t('navigation.primeBadge') },
   ];
 
   return (
@@ -54,13 +57,13 @@ export function Sidebar({
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                  <span>{item.label}</span>
+                <div className="flex items-center gap-3 min-w-0">
+                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                  <span className="truncate">{item.label}</span>
                 </div>
                 {item.badge && (
                   <span
-                    className={`text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded-sm ${
+                    className={`text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded-sm shrink-0 ${
                       isActive
                         ? 'bg-white/20 text-white'
                         : 'bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400'
@@ -80,11 +83,11 @@ export function Sidebar({
         <div className="flex items-center gap-2 mb-1.5">
           <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
           <span className="text-xs font-bold text-slate-900 dark:text-white">
-            Trust Rating: Grade {profile?.trustGrade || 'A'}
+            {t('sidebar.trustRating')} {profile?.trustGrade || 'A'}
           </span>
         </div>
         <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
-          Alternative Underwriting Score: <strong>{profile?.footprintScore || 784}</strong>
+          {t('sidebar.alternativeScore')} <strong>{profile?.footprintScore || 784}</strong>
         </p>
       </div>
     </aside>

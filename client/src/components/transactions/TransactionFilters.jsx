@@ -1,8 +1,9 @@
 import { Search, X } from 'lucide-react';
 import Button from '../common/Button';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable TransactionFilters component
+ * Reusable TransactionFilters component with localization
  *
  * @param {Object} props
  * @param {string} props.searchQuery
@@ -24,6 +25,7 @@ export function TransactionFilters({
   onReset,
   className = '',
 }) {
+  const { t } = useLanguage();
   const hasActiveFilters =
     searchQuery !== '' || selectedType !== 'ALL' || selectedStatus !== 'ALL';
 
@@ -39,7 +41,7 @@ export function TransactionFilters({
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search by title, party, category, or reference UTR..."
+            placeholder={t('history.searchPlaceholder')}
             className="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-slate-900 dark:text-white placeholder-slate-400 transition-all"
           />
           {searchQuery && (
@@ -61,9 +63,9 @@ export function TransactionFilters({
             onChange={(e) => onTypeChange(e.target.value)}
             className="text-xs sm:text-sm px-3 py-2 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-slate-700 dark:text-slate-300 font-medium cursor-pointer"
           >
-            <option value="ALL">All Flows</option>
-            <option value="INCOME">Income / Inflows</option>
-            <option value="EXPENSE">Expenses / Outflows</option>
+            <option value="ALL">{t('history.allFlows')}</option>
+            <option value="INCOME">{t('history.incomeFlows')}</option>
+            <option value="EXPENSE">{t('history.expenseFlows')}</option>
           </select>
 
           {/* Evidence Tier Filter */}
@@ -72,11 +74,11 @@ export function TransactionFilters({
             onChange={(e) => onStatusChange(e.target.value)}
             className="text-xs sm:text-sm px-3 py-2 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 text-slate-700 dark:text-slate-300 font-medium cursor-pointer"
           >
-            <option value="ALL">All Evidence Tiers</option>
-            <option value="VERIFIED">Verified (Direct Proof)</option>
-            <option value="CORROBORATED">Corroborated (Cross Proof)</option>
-            <option value="SELF_DECLARED">Self-Declared</option>
-            <option value="MISMATCH">Discrepancy / Mismatch</option>
+            <option value="ALL">{t('history.allTiers')}</option>
+            <option value="VERIFIED">{t('evidence.statuses.VERIFIED')}</option>
+            <option value="CORROBORATED">{t('evidence.statuses.CORROBORATED')}</option>
+            <option value="SELF_DECLARED">{t('evidence.statuses.SELF_DECLARED')}</option>
+            <option value="MISMATCH">{t('evidence.statuses.MISMATCH')}</option>
           </select>
 
           {hasActiveFilters && onReset && (
@@ -86,7 +88,7 @@ export function TransactionFilters({
               onClick={onReset}
               className="text-slate-500 hover:text-slate-800 text-xs shrink-0"
             >
-              Reset
+              {t('common.reset')}
             </Button>
           )}
         </div>

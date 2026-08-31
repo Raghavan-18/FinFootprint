@@ -1,5 +1,5 @@
 /**
- * Format ISO date string or Date object into human-readable strings.
+ * Format ISO date string or Date object into human-readable strings with locale awareness.
  *
  * @param {string|Date} dateInput
  * @param {Object} options
@@ -12,6 +12,9 @@ export function formatDate(dateInput, options = {}) {
   const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
   if (isNaN(date.getTime())) return String(dateInput);
 
+  const isTamil = typeof document !== 'undefined' && document.documentElement.lang === 'ta';
+  const locale = isTamil ? 'ta-IN' : 'en-IN';
+
   const { format = 'medium' } = options;
 
   if (format === 'relative') {
@@ -23,8 +26,15 @@ export function formatDate(dateInput, options = {}) {
     const diffDay = Math.floor(diffHour / 24);
 
     if (diffDay > 30) {
-      return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      return date.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' });
     }
+    if (isTamil) {
+      if (diffDay > 0) return `${diffDay} நாளுக்கு முன்`;
+      if (diffHour > 0) return `${diffHour} மணிநேரம் முன்`;
+      if (diffMin > 0) return `${diffMin} நிமிடம் முன்`;
+      return 'இப்போதுதான்';
+    }
+
     if (diffDay > 0) return `${diffDay}d ago`;
     if (diffHour > 0) return `${diffHour}h ago`;
     if (diffMin > 0) return `${diffMin}m ago`;
@@ -32,11 +42,11 @@ export function formatDate(dateInput, options = {}) {
   }
 
   if (format === 'short') {
-    return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    return date.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
   }
 
   if (format === 'long') {
-    return date.toLocaleDateString('en-IN', {
+    return date.toLocaleDateString(locale, {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
@@ -46,7 +56,7 @@ export function formatDate(dateInput, options = {}) {
   }
 
   // Default 'medium'
-  return date.toLocaleDateString('en-IN', {
+  return date.toLocaleDateString(locale, {
     day: 'numeric',
     month: 'short',
     year: 'numeric',

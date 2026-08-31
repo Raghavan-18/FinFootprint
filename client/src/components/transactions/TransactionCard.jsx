@@ -6,9 +6,10 @@ import {
 import EvidenceBadge from '../evidence/EvidenceBadge';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { formatDate } from '../../utils/formatDate';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable TransactionCard Component
+ * Reusable TransactionCard Component with localization
  *
  * @param {Object} props
  * @param {Object} props.transaction
@@ -24,9 +25,16 @@ export function TransactionCard({
   showChevron = true,
   className = '',
 }) {
+  const { t } = useLanguage();
   if (!transaction) return null;
 
   const isIncome = (transaction.type || 'INCOME').toUpperCase() === 'INCOME';
+  const categoryLabel =
+    t(`transactions.categories.${transaction.category}`) || transaction.category;
+  const paymentMethodLabel =
+    transaction.paymentMethod
+      ? t(`activity.paymentMethods.${transaction.paymentMethod.toLowerCase()}`) || transaction.paymentMethod
+      : null;
 
   return (
     <div
@@ -67,9 +75,17 @@ export function TransactionCard({
             )}
           </div>
 
-          <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">
+          <div className="flex items-center gap-2.5 text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">
+            {paymentMethodLabel && (
+              <>
+                <span className="font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-1.5 py-0.5 rounded-sm text-[10px]">
+                  {paymentMethodLabel}
+                </span>
+                <span>•</span>
+              </>
+            )}
             {transaction.counterparty && (
-              <span className="truncate max-w-[140px] sm:max-w-[200px]">
+              <span className="truncate max-w-[140px] sm:max-w-[180px]">
                 {transaction.counterparty}
               </span>
             )}
@@ -77,7 +93,7 @@ export function TransactionCard({
               <>
                 <span className="hidden sm:inline">•</span>
                 <span className="hidden sm:inline text-slate-600 dark:text-slate-300 font-medium">
-                  {transaction.category}
+                  {categoryLabel}
                 </span>
               </>
             )}

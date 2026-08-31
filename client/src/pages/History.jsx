@@ -7,9 +7,10 @@ import EvidenceBreakdown from '../components/evidence/EvidenceBreakdown';
 import EvidenceInfoModal from '../components/evidence/EvidenceInfoModal';
 import Button from '../components/common/Button';
 import { PlusCircle } from 'lucide-react';
+import { useLanguage } from '../hooks/useLanguage';
 
 /**
- * History & Ledger Page
+ * History & Ledger Page with localization
  *
  * Full searchable and auditable ledger of all incoming & outgoing entries.
  */
@@ -18,6 +19,7 @@ export function History({
   isLoading = false,
   onNavigate,
 }) {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
@@ -57,11 +59,11 @@ export function History({
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       <PageHeader
-        title="Activity & Transaction Ledger"
-        description="Auditable log of all verified business flows, client payouts, supplier purchases, and self-declarations"
+        title={t('history.pageTitle')}
+        description={t('history.pageSubtitle')}
         breadcrumbs={[
-          { label: 'Dashboard', onClick: () => onNavigate('dashboard') },
-          { label: 'History & Ledger' },
+          { label: t('navigation.dashboard'), onClick: () => onNavigate('dashboard') },
+          { label: t('navigation.history') },
         ]}
         action={
           <div className="flex items-center gap-2">
@@ -71,7 +73,7 @@ export function History({
               icon={<PlusCircle className="w-4 h-4" />}
               onClick={() => onNavigate('add-activity')}
             >
-              Add Activity
+              {t('navbar.addActivityBtn')}
             </Button>
           </div>
         }
@@ -97,19 +99,19 @@ export function History({
       {/* Transaction List */}
       <div className="space-y-3">
         <div className="flex justify-between items-center px-1 text-xs text-slate-500 font-medium">
-          <span>Showing {filteredTransactions.length} recorded events</span>
-          <span>Click any record to inspect verifiable audit trail</span>
+          <span>{t('history.showingRecords', { count: filteredTransactions.length })}</span>
+          <span className="hidden sm:inline">{t('history.clickToInspect')}</span>
         </div>
 
         <TransactionList
           transactions={filteredTransactions}
           isLoading={isLoading}
           onSelectTransaction={(tx) => setSelectedTransaction(tx)}
-          emptyTitle="No matching transactions found"
-          emptyDescription="Try resetting your search query or selecting a different filter."
+          emptyTitle={t('history.noMatching')}
+          emptyDescription={t('history.noMatchingDesc')}
           emptyAction={
             <Button variant="outline" size="sm" onClick={handleResetFilters}>
-              Reset Filters
+              {t('common.resetFilters')}
             </Button>
           }
         />

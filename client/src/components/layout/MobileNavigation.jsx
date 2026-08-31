@@ -6,7 +6,9 @@ import {
   User,
   FileSpreadsheet,
   X,
+  Globe,
 } from 'lucide-react';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
  * Reusable MobileNavigation component
@@ -25,13 +27,15 @@ export function MobileNavigation({
   onClose,
   profile,
 }) {
+  const { language, setLanguage, t } = useLanguage();
+
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'add-activity', label: 'Add Activity', icon: PlusCircle },
-    { id: 'history', label: 'History', icon: Clock },
-    { id: 'analysis', label: 'Analysis', icon: TrendingUp },
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'lender-report', label: 'Lender Dossier', icon: FileSpreadsheet },
+    { id: 'dashboard', label: t('navigation.dashboard'), icon: LayoutDashboard },
+    { id: 'add-activity', label: t('navigation.addActivity'), icon: PlusCircle },
+    { id: 'history', label: t('navigation.history'), icon: Clock },
+    { id: 'analysis', label: t('navigation.analysis'), icon: TrendingUp },
+    { id: 'profile', label: t('navigation.profile'), icon: User },
+    { id: 'lender-report', label: t('navigation.lenderReport'), icon: FileSpreadsheet },
   ];
 
   return (
@@ -51,19 +55,51 @@ export function MobileNavigation({
                     F
                   </div>
                   <span className="font-bold text-slate-900 dark:text-white">
-                    FinFootprint
+                    {t('common.appName')}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
+                  className="p-1 rounded-lg text-slate-400 hover:text-slate-700 cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="mt-6 space-y-1">
+              {/* Language Switcher in Drawer */}
+              <div className="mt-4 p-2 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-between">
+                <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5 pl-1">
+                  <Globe className="w-3.5 h-3.5" />
+                  {t('navigation.language')}
+                </span>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage('en')}
+                    className={`px-2 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                      language === 'en'
+                        ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                        : 'text-slate-600 dark:text-slate-400'
+                    }`}
+                  >
+                    EN
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage('ta')}
+                    className={`px-2 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                      language === 'ta'
+                        ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                        : 'text-slate-600 dark:text-slate-400'
+                    }`}
+                  >
+                    தமிழ்
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-4 space-y-1">
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = activeTab === item.id;
@@ -75,14 +111,14 @@ export function MobileNavigation({
                         onSelectTab(item.id);
                         onClose();
                       }}
-                      className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer ${
+                      className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-colors cursor-pointer ${
                         isActive
                           ? 'bg-indigo-600 text-white'
                           : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
-                      <span>{item.label}</span>
+                      <Icon className="w-4 h-4 shrink-0" />
+                      <span className="truncate">{item.label}</span>
                     </button>
                   );
                 })}
@@ -90,7 +126,7 @@ export function MobileNavigation({
             </div>
 
             <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs text-slate-500">
-              Logged in as <strong className="text-slate-800 dark:text-slate-200">{profile?.fullName}</strong>
+              {t('navbar.loggedInAs')} <strong className="text-slate-800 dark:text-slate-200">{profile?.fullName}</strong>
             </div>
           </div>
         </div>
@@ -110,14 +146,14 @@ export function MobileNavigation({
               key={item.id}
               type="button"
               onClick={() => onSelectTab(item.id)}
-              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-medium transition-colors cursor-pointer ${
+              className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl text-[10px] font-medium transition-colors cursor-pointer max-w-[72px] truncate ${
                 isActive
                   ? 'text-indigo-600 dark:text-indigo-400 font-bold'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
               }`}
             >
-              <Icon className={`w-5 h-5 mb-0.5 ${isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
-              <span>{item.label}</span>
+              <Icon className={`w-5 h-5 mb-0.5 shrink-0 ${isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
+              <span className="truncate w-full text-center">{item.label}</span>
             </button>
           );
         })}

@@ -1,9 +1,10 @@
 import Modal from '../common/Modal';
 import Button from '../common/Button';
 import TransactionDetails from './TransactionDetails';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable TransactionDetailsModal Component
+ * Reusable TransactionDetailsModal Component with localization
  *
  * @param {Object} props
  * @param {boolean} props.isOpen
@@ -11,22 +12,23 @@ import TransactionDetails from './TransactionDetails';
  * @param {Object} props.transaction
  */
 export function TransactionDetailsModal({ isOpen, onClose, transaction }) {
+  const { t } = useLanguage();
   if (!transaction) return null;
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Transaction & Evidence Record"
-      description={`ID: ${transaction.id || 'N/A'}`}
+      title={t('transactions.modalTitle')}
+      description={`${t('transactions.recordId')} ${transaction.id || t('common.na')}`}
       size="lg"
       footer={
         <Button variant="secondary" size="sm" onClick={onClose}>
-          Close Record
+          {t('common.closeRecord')}
         </Button>
       }
     >
-      <TransactionDetails transaction={transaction} onClose={onClose} />
+      <TransactionDetails transaction={transaction} />
     </Modal>
   );
 }

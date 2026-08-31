@@ -1,25 +1,28 @@
 import Modal from '../common/Modal';
 import Button from '../common/Button';
 import EvidenceExplanation from './EvidenceExplanation';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable EvidenceInfoModal component
+ * Reusable EvidenceInfoModal component with localization
  *
  * @param {Object} props
  * @param {boolean} props.isOpen
  * @param {Function} props.onClose
  */
 export function EvidenceInfoModal({ isOpen, onClose }) {
+  const { t } = useLanguage();
+
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Evidence & Verification Framework"
-      description="Understanding how FinFootprint validates informal transactions into creditworthy footprints"
+      title={t('evidence.modalTitle')}
+      description={t('evidence.modalSubtitle')}
       size="lg"
       footer={
         <Button variant="primary" size="sm" onClick={onClose}>
-          Got it
+          {t('common.gotIt')}
         </Button>
       }
     >

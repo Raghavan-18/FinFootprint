@@ -1,9 +1,10 @@
 import { ShieldCheck, CheckCheck, FileText, AlertTriangle } from 'lucide-react';
 import { getEvidenceConfig } from '../../utils/evidenceUtils';
 import Tooltip from '../common/Tooltip';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable EvidenceBadge component
+ * Reusable EvidenceBadge component with automatic localization
  *
  * @param {Object} props
  * @param {'VERIFIED'|'CORROBORATED'|'SELF_DECLARED'|'MISMATCH'|string} props.status
@@ -23,7 +24,13 @@ export function EvidenceBadge({
   onClick,
   className = '',
 }) {
+  const { t } = useLanguage();
   const config = getEvidenceConfig(status);
+  const normalized = (status || 'SELF_DECLARED').toUpperCase().trim();
+
+  // Localized label and description
+  const label = t(`evidence.statuses.${normalized}`) || config.label;
+  const description = t(`evidence.descriptions.${normalized}`) || config.description;
 
   const getIcon = (iconName, sizeClass) => {
     switch (iconName) {
@@ -64,13 +71,13 @@ export function EvidenceBadge({
       className={`inline-flex items-center border select-none transition-all duration-150 ${config.badgeBg} ${currentSize.badge} ${cursorStyle} ${className}`}
     >
       {showIcon && getIcon(config.iconName, currentSize.icon)}
-      <span>{config.label}</span>
+      <span className="truncate">{label}</span>
     </span>
   );
 
   if (showTooltip) {
     return (
-      <Tooltip content={`${config.label}: ${config.description}`}>
+      <Tooltip content={`${label}: ${description}`}>
         {badgeElement}
       </Tooltip>
     );

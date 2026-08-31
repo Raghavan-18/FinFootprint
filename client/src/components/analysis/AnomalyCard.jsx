@@ -2,9 +2,10 @@ import Badge from '../common/Badge';
 import Button from '../common/Button';
 import { AlertTriangle, Check } from 'lucide-react';
 import { formatDate } from '../../utils/formatDate';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable AnomalyCard component
+ * Reusable AnomalyCard component with localization
  *
  * @param {Object} props
  * @param {Object} props.anomaly
@@ -18,6 +19,7 @@ export function AnomalyCard({
   onViewTransaction,
   className = '',
 }) {
+  const { t } = useLanguage();
   if (!anomaly) return null;
 
   const getSeverityVariant = (sev) => {
@@ -34,6 +36,8 @@ export function AnomalyCard({
     }
   };
 
+  const severityText = t(`anomaly.severity.${anomaly.severity}`) || anomaly.severity;
+
   return (
     <div
       className={`p-5 rounded-2xl border border-rose-200/80 dark:border-rose-900/40 bg-rose-50/30 dark:bg-rose-950/10 ${className}`}
@@ -49,22 +53,22 @@ export function AnomalyCard({
                 {anomaly.title}
               </h4>
               <Badge variant={getSeverityVariant(anomaly.severity)} size="sm">
-                {anomaly.severity} SEVERITY
+                {severityText}
               </Badge>
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              Detected {formatDate(anomaly.date, { format: 'short' })} • Impact: {anomaly.impactScore || -5} pts
+              {formatDate(anomaly.date, { format: 'short' })} • {t('anomaly.impact')} {anomaly.impactScore || -5} pts
             </p>
           </div>
         </div>
 
         {anomaly.status === 'RESOLVED' ? (
           <Badge variant="emerald" size="sm" icon={<Check className="w-3 h-3" />}>
-            Resolved
+            {t('anomaly.resolved')}
           </Badge>
         ) : (
           <Badge variant="amber" size="sm">
-            Action Required
+            {t('anomaly.actionRequired')}
           </Badge>
         )}
       </div>
@@ -77,7 +81,7 @@ export function AnomalyCard({
         <div className="mb-4 pl-0 sm:pl-11">
           <div className="p-3 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-rose-100 dark:border-rose-900/30 text-xs">
             <span className="font-semibold text-rose-900 dark:text-rose-300">
-              Recommended Remediation:
+              {t('anomaly.recommendedRemediation')}
             </span>
             <p className="text-slate-600 dark:text-slate-400 mt-0.5">
               {anomaly.actionRequired}
@@ -94,7 +98,7 @@ export function AnomalyCard({
             onClick={() => onViewTransaction(anomaly.transactionId)}
             className="text-xs"
           >
-            View Flagged Record
+            {t('common.viewFlaggedRecord')}
           </Button>
         )}
         {onResolve && anomaly.status !== 'RESOLVED' && (
@@ -104,7 +108,7 @@ export function AnomalyCard({
             onClick={() => onResolve(anomaly)}
             className="text-xs"
           >
-            Submit Corroborating Proof
+            {t('common.submitProof')}
           </Button>
         )}
       </div>

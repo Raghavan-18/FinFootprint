@@ -9,15 +9,17 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { formatDate } from '../../utils/formatDate';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable ProfileHeader component
+ * Reusable ProfileHeader component with localization
  *
  * @param {Object} props
  * @param {Object} props.profile
  * @param {string} [props.className='']
  */
 export function ProfileHeader({ profile, className = '' }) {
+  const { t } = useLanguage();
   if (!profile) return null;
 
   return (
@@ -43,10 +45,10 @@ export function ProfileHeader({ profile, className = '' }) {
                 {profile.fullName}
               </h2>
               <Badge variant="emerald" size="sm" icon={<ShieldCheck className="w-3.5 h-3.5" />}>
-                KYC Verified
+                {t('profile.kycVerified')}
               </Badge>
               <Badge variant="indigo" size="sm">
-                AA Active
+                {t('profile.aaActive')}
               </Badge>
             </div>
 
@@ -74,19 +76,19 @@ export function ProfileHeader({ profile, className = '' }) {
         {/* Right: Registration badges */}
         <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 text-xs space-y-1.5 w-full md:w-auto">
           <div className="flex justify-between md:justify-start gap-4">
-            <span className="text-slate-500 font-medium">GST Identification:</span>
+            <span className="text-slate-500 font-medium">{t('profile.gstId')}</span>
             <span className="font-mono font-semibold text-slate-800 dark:text-slate-200">
               {profile.registrationNumber}
             </span>
           </div>
           <div className="flex justify-between md:justify-start gap-4">
-            <span className="text-slate-500 font-medium">PAN Number:</span>
+            <span className="text-slate-500 font-medium">{t('profile.panNumber')}</span>
             <span className="font-mono font-semibold text-slate-800 dark:text-slate-200">
               {profile.panNumber}
             </span>
           </div>
           <div className="flex justify-between md:justify-start gap-4">
-            <span className="text-slate-500 font-medium">Footprint Established:</span>
+            <span className="text-slate-500 font-medium">{t('profile.established')}</span>
             <span className="font-semibold text-slate-800 dark:text-slate-200">
               {formatDate(profile.memberSince)}
             </span>

@@ -57,7 +57,7 @@ export function App() {
 
   // Handle adding new transaction activity
   const handleAddActivity = async (newActivity) => {
-    const createdTx = await apiService.addActivity(newActivity);
+    const createdTx = await apiService.submitFinancialActivity(newActivity);
     setTransactions((prev) => [createdTx, ...prev]);
 
     // Recalculate quick stats if applicable

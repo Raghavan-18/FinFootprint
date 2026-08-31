@@ -2,9 +2,10 @@ import Card from '../common/Card';
 import Badge from '../common/Badge';
 import MetricProgress from './MetricProgress';
 import { TrendingUp, CheckCircle } from 'lucide-react';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable MetricCard component for financial health & behavioral indicators
+ * Reusable MetricCard component with localization
  *
  * @param {Object} props
  * @param {string} props.title
@@ -30,6 +31,8 @@ export function MetricCard({
   icon = null,
   className = '',
 }) {
+  const { t } = useLanguage();
+
   const getBadgeVariant = (st) => {
     switch (String(st).toUpperCase()) {
       case 'OPTIMAL':
@@ -55,18 +58,18 @@ export function MetricCard({
       <div>
         {/* Top Header */}
         <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             {icon && (
-              <div className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+              <div className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0">
                 {icon}
               </div>
             )}
-            <div>
-              <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
+            <div className="min-w-0">
+              <h4 className="text-sm font-semibold text-slate-900 dark:text-white truncate">
                 {title}
               </h4>
               {benchmark && (
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
                   {benchmark}
                 </p>
               )}
@@ -115,7 +118,7 @@ export function MetricCard({
       {factors && factors.length > 0 && (
         <div className="pt-3.5 border-t border-slate-100 dark:border-slate-800/80 space-y-1.5 mt-auto">
           <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
-            Contributing Drivers
+            {t('analysis.contributingDrivers')}
           </span>
           {factors.map((factor, idx) => (
             <div key={idx} className="flex items-start gap-1.5 text-xs text-slate-600 dark:text-slate-300">

@@ -6,9 +6,10 @@ import EvidenceSummary from './EvidenceSummary';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { formatDate } from '../../utils/formatDate';
 import { Printer } from 'lucide-react';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable LenderReport component
+ * Reusable LenderReport component with localization
  *
  * @param {Object} props
  * @param {Object} props.report - Lender report data object
@@ -22,11 +23,15 @@ export function LenderReport({
   stats,
   className = '',
 }) {
+  const { t, isTamil } = useLanguage();
   if (!report) return null;
 
   const handlePrint = () => {
     window.print();
   };
+
+  const riskGradeDisplay = isTamil ? 'குறைந்த இடர் (பிரிவு A-)' : report.riskGrade;
+  const scoreBandDisplay = isTamil ? 'பிரைம் அடுக்கு (750 - 850)' : report.scoreBand;
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -36,17 +41,17 @@ export function LenderReport({
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
-                Institutional Underwriting Summary
+                {t('lenderReport.letterheadTitle')}
               </span>
               <Badge variant="indigo" size="sm">
-                Confidential
+                {t('common.confidential')}
               </Badge>
             </div>
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
-              Credit Footprint & Underwriting Assessment
+              {t('lenderReport.letterheadHeading')}
             </h2>
             <p className="text-xs text-slate-500 mt-1">
-              Application ID: <span className="font-mono font-semibold">{report.applicationId}</span> • Generated {formatDate(report.generatedDate)}
+              {t('lenderReport.appId')} <span className="font-mono font-semibold">{report.applicationId}</span> • {t('lenderReport.generated')} {formatDate(report.generatedDate)}
             </p>
           </div>
 
@@ -57,7 +62,7 @@ export function LenderReport({
               icon={<Printer className="w-3.5 h-3.5" />}
               onClick={handlePrint}
             >
-              Print Dossier
+              {t('common.printDossier')}
             </Button>
           </div>
         </div>
@@ -66,7 +71,7 @@ export function LenderReport({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-5">
           <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700">
             <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
-              Applicant Trade Name
+              {t('lenderReport.tradeName')}
             </span>
             <p className="text-sm font-bold text-slate-900 dark:text-white mt-1 truncate">
               {report.tradeName || profile?.businessName}
@@ -76,38 +81,38 @@ export function LenderReport({
 
           <div className="p-3.5 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50">
             <span className="text-[11px] font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider block">
-              Recommended Sanction Limit
+              {t('lenderReport.recommendedLimit')}
             </span>
             <p className="text-2xl font-black text-emerald-700 dark:text-emerald-300 mt-1">
               {formatCurrency(report.recommendedCreditLimit)}
             </p>
             <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5">
-              Tenure: {report.recommendedTenureMonths} Months
+              {t('lenderReport.tenure')} {report.recommendedTenureMonths} {t('lenderReport.months')}
             </p>
           </div>
 
           <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700">
             <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
-              Risk Evaluation Grade
+              {t('lenderReport.riskGrade')}
             </span>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-lg font-bold text-slate-900 dark:text-white">
-                {report.riskGrade}
+                {riskGradeDisplay}
               </span>
             </div>
             <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-0.5">
-              {report.scoreBand}
+              {scoreBandDisplay}
             </p>
           </div>
 
           <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700">
             <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
-              Indicative Interest Tier
+              {t('lenderReport.interestTier')}
             </span>
             <p className="text-lg font-bold text-slate-900 dark:text-white mt-1">
               {report.estimatedInterestTier}
             </p>
-            <p className="text-xs text-slate-500 mt-0.5">Based on Prime Risk Bracket</p>
+            <p className="text-xs text-slate-500 mt-0.5">{t('lenderReport.primeBracket')}</p>
           </div>
         </div>
       </Card>

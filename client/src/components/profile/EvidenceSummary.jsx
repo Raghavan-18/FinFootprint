@@ -1,49 +1,52 @@
 import Card from '../common/Card';
 import Badge from '../common/Badge';
 import { ShieldCheck, Database, FileText, Smartphone } from 'lucide-react';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable EvidenceSummary component for user profile
+ * Reusable EvidenceSummary component for user profile with localization
  *
  * @param {Object} props
  * @param {string} [props.className='']
  */
 export function EvidenceSummary({ className = '' }) {
+  const { t } = useLanguage();
+
   const sources = [
     {
-      name: 'Account Aggregator (Setu / Sahamati)',
-      status: 'ACTIVE',
-      lastSync: 'Today, 06:30 AM',
-      type: 'Bank Statements & Balance Trails',
+      name: t('profile.sources.aaName'),
+      status: t('common.active'),
+      lastSync: `${t('common.today')}, 06:30 AM`,
+      type: t('profile.sources.aaType'),
       icon: <Database className="w-4 h-4 text-emerald-500" />,
     },
     {
-      name: 'GSTN Invoicing Portal',
-      status: 'VERIFIED',
-      lastSync: 'Yesterday',
-      type: 'B2B Procurement & Outward Supplies',
+      name: t('profile.sources.gstName'),
+      status: t('common.verified'),
+      lastSync: t('common.yesterday'),
+      type: t('profile.sources.gstType'),
       icon: <FileText className="w-4 h-4 text-indigo-500" />,
     },
     {
-      name: 'Bharat Bill Payment System (BBPS)',
-      status: 'ACTIVE',
+      name: t('profile.sources.bbpsName'),
+      status: t('common.active'),
       lastSync: 'Mar 15, 2026',
-      type: 'Commercial Electricity & Utilities',
+      type: t('profile.sources.bbpsType'),
       icon: <ShieldCheck className="w-4 h-4 text-blue-500" />,
     },
     {
-      name: 'UPI SMS Corroboration Engine',
-      status: 'SYNCED',
-      lastSync: 'Real-time',
-      type: 'Retail Customer Micro-Receipts',
+      name: t('profile.sources.smsName'),
+      status: t('common.synced'),
+      lastSync: t('common.realTime'),
+      type: t('profile.sources.smsType'),
       icon: <Smartphone className="w-4 h-4 text-amber-500" />,
     },
   ];
 
   return (
     <Card
-      title="Connected Evidence Data Sources"
-      subtitle="Verified digital data pipelines feeding your real-time alternative credit footprint"
+      title={t('profile.connectedSourcesTitle')}
+      subtitle={t('profile.connectedSourcesSubtitle')}
       className={className}
     >
       <div className="space-y-3">
@@ -68,7 +71,7 @@ export function EvidenceSummary({ className = '' }) {
               <Badge variant="emerald" size="sm" dot>
                 {src.status}
               </Badge>
-              <p className="text-[10px] text-slate-400 mt-1">Sync: {src.lastSync}</p>
+              <p className="text-[10px] text-slate-400 mt-1">{t('common.sync')}: {src.lastSync}</p>
             </div>
           </div>
         ))}

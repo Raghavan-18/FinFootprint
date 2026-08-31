@@ -7,6 +7,7 @@ import RecentActivity from '../components/dashboard/RecentActivity';
 import TransactionDetailsModal from '../components/transactions/TransactionDetailsModal';
 import EvidenceInfoModal from '../components/evidence/EvidenceInfoModal';
 import LoadingState from '../components/common/LoadingState';
+import { useLanguage } from '../hooks/useLanguage';
 
 /**
  * Dashboard Page
@@ -22,11 +23,12 @@ export function Dashboard({
   isLoading,
   onNavigate,
 }) {
+  const { t } = useLanguage();
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [isEvidenceModalOpen, setIsEvidenceModalOpen] = useState(false);
 
   if (isLoading) {
-    return <LoadingState message="Loading your financial footprint..." />;
+    return <LoadingState message={t('common.loadingData')} />;
   }
 
   return (

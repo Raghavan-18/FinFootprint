@@ -1,1 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-tamil: "Noto Sans Tamil", "Noto Sans", sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Noto Sans Tamil", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ==================================================
+   GLOBAL TAMIL TYPOGRAPHY SYSTEM
+   ================================================== */
+
+/* Target both html[lang="ta"], .lang-ta, and body.lang-ta */
+html[lang="ta"],
+html.lang-ta,
+body.lang-ta,
+.lang-ta {
+  font-family: "Noto Sans Tamil", "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Base Body Text for Tamil */
+html[lang="ta"] body,
+body.lang-ta {
+  font-family: "Noto Sans Tamil", "Noto Sans", sans-serif !important;
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+}
+
+/* Headings in Tamil */
+html[lang="ta"] h1,
+html[lang="ta"] h2,
+html[lang="ta"] h3,
+html[lang="ta"] h4,
+html[lang="ta"] h5,
+html[lang="ta"] h6,
+.lang-ta h1,
+.lang-ta h2,
+.lang-ta h3,
+.lang-ta h4,
+.lang-ta h5,
+.lang-ta h6 {
+  font-family: "Noto Sans Tamil", "Noto Sans", sans-serif;
+  font-weight: 700;
+  line-height: 1.38;
+  letter-spacing: normal;
+}
+
+/* Paragraphs & Descriptions */
+html[lang="ta"] p,
+.lang-ta p {
+  line-height: 1.7;
+}
+
+/* Labels, Form Controls, and Inputs */
+html[lang="ta"] label,
+.lang-ta label {
+  font-family: "Noto Sans Tamil", "Noto Sans", sans-serif;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+html[lang="ta"] input,
+html[lang="ta"] select,
+html[lang="ta"] textarea,
+.lang-ta input,
+.lang-ta select,
+.lang-ta textarea {
+  font-family: "Noto Sans Tamil", "Noto Sans", sans-serif;
+  line-height: 1.5;
+}
+
+html[lang="ta"] input::placeholder,
+html[lang="ta"] textarea::placeholder,
+.lang-ta input::placeholder,
+.lang-ta textarea::placeholder {
+  font-family: "Noto Sans Tamil", "Noto Sans", sans-serif;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* Buttons and Badges - Ensure flexible fit & comfortable line-height */
+html[lang="ta"] button,
+.lang-ta button {
+  font-family: "Noto Sans Tamil", "Noto Sans", sans-serif;
+  line-height: 1.4;
+  letter-spacing: normal;
+}
+
+/* Navigation items in sidebar & mobile drawer */
+html[lang="ta"] nav button,
+.lang-ta nav button {
+  line-height: 1.4;
+}
+
+/* Subtle contrast boost for Tamil text in dark theme */
+.dark html[lang="ta"] .text-slate-500,
+.dark .lang-ta .text-slate-500 {
+  color: rgb(160 174 192);
+}
+
+.dark html[lang="ta"] .text-slate-400,
+.dark .lang-ta .text-slate-400 {
+  color: rgb(178 190 205);
+}

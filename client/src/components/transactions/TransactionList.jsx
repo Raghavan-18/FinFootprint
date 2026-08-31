@@ -1,9 +1,10 @@
 import TransactionCard from './TransactionCard';
 import EmptyState from '../common/EmptyState';
 import LoadingState from '../common/LoadingState';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable TransactionList container component
+ * Reusable TransactionList container component with localization
  *
  * @param {Object} props
  * @param {Array<Object>} props.transactions
@@ -11,8 +12,8 @@ import LoadingState from '../common/LoadingState';
  * @param {Function} [props.onSelectTransaction]
  * @param {number} [props.limit]
  * @param {boolean} [props.compact=false]
- * @param {string} [props.emptyTitle='No transactions recorded']
- * @param {string} [props.emptyDescription='Start by logging your recent activity or syncing your accounts.']
+ * @param {string} [props.emptyTitle]
+ * @param {string} [props.emptyDescription]
  * @param {React.ReactNode} [props.emptyAction]
  * @param {string} [props.className='']
  */
@@ -22,11 +23,13 @@ export function TransactionList({
   onSelectTransaction,
   limit,
   compact = false,
-  emptyTitle = 'No transactions recorded',
-  emptyDescription = 'Start by logging your recent activity or syncing your accounts.',
+  emptyTitle,
+  emptyDescription,
   emptyAction = null,
   className = '',
 }) {
+  const { t } = useLanguage();
+
   if (isLoading) {
     return <LoadingState type="skeleton" count={4} className={className} />;
   }
@@ -38,8 +41,8 @@ export function TransactionList({
   if (displayedTransactions.length === 0) {
     return (
       <EmptyState
-        title={emptyTitle}
-        description={emptyDescription}
+        title={emptyTitle || t('transactions.emptyTitle')}
+        description={emptyDescription || t('transactions.emptyDesc')}
         action={emptyAction}
         className={className}
       />

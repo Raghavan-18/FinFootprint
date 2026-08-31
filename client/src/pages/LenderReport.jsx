@@ -1,9 +1,10 @@
 import PageHeader from '../components/common/PageHeader';
 import LenderReport from '../components/lender/LenderReport';
 import LoadingState from '../components/common/LoadingState';
+import { useLanguage } from '../hooks/useLanguage';
 
 /**
- * LenderReport Page
+ * LenderReport Page with localization
  *
  * Institutional Underwriting Dossier generated for NBFCs and Banks.
  */
@@ -14,18 +15,20 @@ export function LenderReportPage({
   isLoading = false,
   onNavigate,
 }) {
+  const { t } = useLanguage();
+
   if (isLoading) {
-    return <LoadingState message="Compiling formal credit underwriting dossier..." />;
+    return <LoadingState message={t('common.loadingData')} />;
   }
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       <PageHeader
-        title="Lender Credit Assessment Dossier"
-        description="Formal auditable evaluation package for bank credit committees, loan officers, and automated fintech underwriters"
+        title={t('lenderReport.pageTitle')}
+        description={t('lenderReport.pageSubtitle')}
         breadcrumbs={[
-          { label: 'Dashboard', onClick: () => onNavigate('dashboard') },
-          { label: 'Lender Dossier' },
+          { label: t('navigation.dashboard'), onClick: () => onNavigate('dashboard') },
+          { label: t('navigation.lenderReport') },
         ]}
       />
 

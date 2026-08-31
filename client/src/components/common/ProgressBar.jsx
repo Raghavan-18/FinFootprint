@@ -1,6 +1,7 @@
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable Progress Bar Component
+ * Reusable Progress Bar Component with localization
  *
  * @param {Object} props
  * @param {number} props.value - Current progress value (e.g. 87)
@@ -20,6 +21,7 @@ export function ProgressBar({
   label = '',
   className = '',
 }) {
+  const { t } = useLanguage();
   const clampedValue = Math.min(Math.max(0, Number(value) || 0), max);
   const percentage = Math.round((clampedValue / max) * 100);
 
@@ -51,7 +53,7 @@ export function ProgressBar({
     <div className={`w-full ${className}`}>
       {(showLabel || label) && (
         <div className="flex justify-between items-center mb-1.5 text-xs text-slate-600 dark:text-slate-400">
-          <span className="font-medium">{label || 'Progress'}</span>
+          <span className="font-medium">{label || t('common.progress')}</span>
           <span className="font-semibold text-slate-900 dark:text-slate-200">
             {percentage}%
           </span>

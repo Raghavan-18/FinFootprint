@@ -1,8 +1,9 @@
 import Card from '../common/Card';
 import { formatCurrency } from '../../utils/formatCurrency';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable FinancialOverview component for cashflow dynamics
+ * Reusable FinancialOverview component with localization
  *
  * @param {Object} props
  * @param {Array<Object>} [props.cashflows=[]]
@@ -10,6 +11,8 @@ import { formatCurrency } from '../../utils/formatCurrency';
  * @param {string} [props.className='']
  */
 export function FinancialOverview({ cashflows = [], stats, className = '' }) {
+  const { t } = useLanguage();
+
   const maxAmount = Math.max(
     ...cashflows.map((c) => Math.max(c.income, c.expenses)),
     60000
@@ -17,8 +20,8 @@ export function FinancialOverview({ cashflows = [], stats, className = '' }) {
 
   return (
     <Card
-      title="Cashflow Velocity & Monthly Trends"
-      subtitle="Auditable comparison of verified inflows vs operational expenditures over past 6 months"
+      title={t('dashboard.cashflowVelocityTitle')}
+      subtitle={t('dashboard.cashflowVelocitySubtitle')}
       className={className}
     >
       {/* Visual Bar Graph */}
@@ -27,14 +30,14 @@ export function FinancialOverview({ cashflows = [], stats, className = '' }) {
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-400">
               <span className="w-3 h-3 rounded-xs bg-emerald-500" />
-              Inflows (Income)
+              {t('common.inflow')}
             </span>
             <span className="flex items-center gap-1.5 font-medium text-slate-600 dark:text-slate-400">
               <span className="w-3 h-3 rounded-xs bg-slate-400 dark:bg-slate-600" />
-              Outflows (Expenses)
+              {t('common.outflow')}
             </span>
           </div>
-          <span className="text-[11px] text-slate-400 hidden sm:inline">Values in INR (₹)</span>
+          <span className="text-[11px] text-slate-400 hidden sm:inline">{t('common.valuesInInr')}</span>
         </div>
 
         <div className="grid grid-cols-6 gap-2 sm:gap-4 items-end h-48 sm:h-56 pt-4">
@@ -81,21 +84,21 @@ export function FinancialOverview({ cashflows = [], stats, className = '' }) {
       {/* Summary Footers */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-5 mt-5 border-t border-slate-100 dark:border-slate-800">
         <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800">
-          <span className="text-[11px] text-slate-500">6-Month Total Recorded Volume</span>
+          <span className="text-[11px] text-slate-500">{t('dashboard.totalRecordedVolume')}</span>
           <p className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">
             {formatCurrency(stats?.totalRecordedTurnover || 583800)}
           </p>
         </div>
         <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800">
-          <span className="text-[11px] text-slate-500">GST / Invoice Corroborated</span>
+          <span className="text-[11px] text-slate-500">{t('dashboard.gstCorroborated')}</span>
           <p className="text-sm font-bold text-indigo-600 dark:text-indigo-400 mt-0.5">
-            {stats?.gstVerifiedTurnoverRatio || 72}% of Total
+            {stats?.gstVerifiedTurnoverRatio || 72}% {t('dashboard.ofTotal')}
           </p>
         </div>
         <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800">
-          <span className="text-[11px] text-slate-500">Cashflow Runway Capacity</span>
+          <span className="text-[11px] text-slate-500">{t('dashboard.cashflowRunwayCapacity')}</span>
           <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
-            {stats?.cashflowRunwayMonths || 4.2} Months Reserve
+            {stats?.cashflowRunwayMonths || 4.2} {t('dashboard.monthsReserve')}
           </p>
         </div>
       </div>

@@ -14,6 +14,7 @@ import {
   mockAnomalies,
   mockLenderReport,
 } from '../data/mockData';
+import { evaluateEvidence } from './evidenceService';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 const USE_MOCK = true; // Can be toggled with environment variable VITE_USE_MOCK
@@ -89,7 +90,8 @@ export const apiService = {
             tx.title.toLowerCase().includes(query) ||
             tx.counterparty.toLowerCase().includes(query) ||
             tx.category.toLowerCase().includes(query) ||
-            (tx.referenceId && tx.referenceId.toLowerCase().includes(query))
+            (tx.referenceId && tx.referenceId.toLowerCase().includes(query)) ||
+            (tx.reference && tx.reference.toLowerCase().includes(query))
         );
       }
 
@@ -103,28 +105,43 @@ export const apiService = {
   },
 
   /**
-   * Add a new financial transaction / evidence activity
+   * Primary method: Submit Financial Activity and evaluate evidence
+   * Temporary frontend simulation. Replace with FastAPI evidence engine endpoint.
    */
-  async addActivity(payload) {
+  async submitFinancialActivity(payload) {
     if (USE_MOCK) {
-      await simulateLatency(250);
+      await simulateLatency(350);
+
+      // Evaluate evidence using the mock evidence engine
+      const evidenceAssessment = evaluateEvidence(payload);
+
       const newTx = {
         id: `tx_${Date.now()}`,
         title: payload.title || 'Declared Activity',
         type: payload.type || 'INCOME',
         category: payload.category || 'General',
         amount: Number(payload.amount) || 0,
-        date: payload.date || new Date().toISOString(),
-        evidenceStatus: payload.evidenceStatus || 'SELF_DECLARED',
-        evidenceType: payload.evidenceType || 'Self-Declared Record',
-        referenceId: payload.referenceId || `DECL/${Math.floor(100000 + Math.random() * 900000)}`,
+        date: payload.date || new Date().toISOString().split('T')[0],
         counterparty: payload.counterparty || 'Self / Counterparty',
+        paymentMethod: payload.paymentMethod || 'CASH',
+        reference: payload.reference || payload.referenceId || '',
+        referenceId: payload.reference || payload.referenceId || '',
+        proofAttached: Boolean(payload.proofFileName || payload.proofDocument),
+        proofFileName: payload.proofFileName || payload.proofDocument || null,
+        proofDocument: payload.proofFileName || payload.proofDocument || null,
         notes: payload.notes || '',
-        proofDocument: payload.proofDocument || null,
-        confidenceScore: payload.evidenceStatus === 'VERIFIED' ? 98 : payload.evidenceStatus === 'CORROBORATED' ? 82 : 50,
+        evidenceStatus: evidenceAssessment.status,
+        confidenceScore: evidenceAssessment.confidenceScore,
+        evidence: {
+          status: evidenceAssessment.status,
+          explanation: evidenceAssessment.explanation,
+          explanationKey: evidenceAssessment.explanationKey,
+          source: evidenceAssessment.source,
+        },
         metadata: {
           submittedVia: 'FinFootprint Web App',
-          reconciliationStatus: payload.evidenceStatus === 'VERIFIED' ? 'Verified Online' : 'Pending Verification',
+          paymentChannel: payload.paymentMethod || 'CASH',
+          reconciliationStatus: evidenceAssessment.status === 'VERIFIED' ? 'Verified Online' : 'Pending Verification',
         },
       };
 
@@ -139,6 +156,13 @@ export const apiService = {
     });
     if (!res.ok) throw new Error('Failed to record activity');
     return res.json();
+  },
+
+  /**
+   * Add a new financial transaction / evidence activity (alias to submitFinancialActivity)
+   */
+  async addActivity(payload) {
+    return this.submitFinancialActivity(payload);
   },
 
   /**

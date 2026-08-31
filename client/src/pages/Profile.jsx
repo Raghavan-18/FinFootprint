@@ -5,9 +5,10 @@ import ProfileTimeline from '../components/profile/ProfileTimeline';
 import ProfileInsights from '../components/profile/ProfileInsights';
 import EvidenceSummary from '../components/profile/EvidenceSummary';
 import LoadingState from '../components/common/LoadingState';
+import { useLanguage } from '../hooks/useLanguage';
 
 /**
- * Profile Page
+ * Profile Page with localization
  *
  * User business profile, KYC credentials, trust footprint score,
  * verified pipeline integrations, and historical milestones.
@@ -17,18 +18,20 @@ export function Profile({
   isLoading = false,
   onNavigate,
 }) {
+  const { t } = useLanguage();
+
   if (isLoading) {
-    return <LoadingState message="Loading profile footprint..." />;
+    return <LoadingState message={t('common.loadingData')} />;
   }
 
   return (
     <div className="space-y-8 animate-in fade-in duration-200">
       <PageHeader
-        title="Applicant Profile & Verifications"
-        description="Comprehensive KYC credentials, enterprise registry data, connected financial streams, and milestone track record"
+        title={t('profile.pageTitle')}
+        description={t('profile.pageSubtitle')}
         breadcrumbs={[
-          { label: 'Dashboard', onClick: () => onNavigate('dashboard') },
-          { label: 'Profile & Proofs' },
+          { label: t('navigation.dashboard'), onClick: () => onNavigate('dashboard') },
+          { label: t('navigation.profile') },
         ]}
       />
 
@@ -40,7 +43,7 @@ export function Profile({
 
       {/* 2-Column Section: Connected Streams & Timeline */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <EvidenceSummary profile={profile} />
+        <EvidenceSummary />
         <ProfileInsights />
       </div>
 

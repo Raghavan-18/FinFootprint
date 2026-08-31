@@ -2,9 +2,10 @@ import Card from '../common/Card';
 import EvidenceBadge from './EvidenceBadge';
 import { EVIDENCE_CONFIG, calculateEvidenceStats } from '../../utils/evidenceUtils';
 import { HelpCircle } from 'lucide-react';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable EvidenceBreakdown component
+ * Reusable EvidenceBreakdown component with localization
  *
  * @param {Object} props
  * @param {Array<Object>} props.transactions - List of transactions to analyze
@@ -16,6 +17,7 @@ export function EvidenceBreakdown({
   onOpenGuide,
   className = '',
 }) {
+  const { t } = useLanguage();
   const stats = calculateEvidenceStats(transactions);
   const total = stats.totalCount || 1;
 
@@ -57,8 +59,8 @@ export function EvidenceBreakdown({
 
   return (
     <Card
-      title="Evidence & Verification Breakdown"
-      subtitle="Auditable trail of recorded financial events categorized by confidence tier"
+      title={t('evidence.breakdownTitle')}
+      subtitle={t('evidence.breakdownSubtitle')}
       headerAction={
         onOpenGuide && (
           <button
@@ -67,7 +69,7 @@ export function EvidenceBreakdown({
             className="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 flex items-center gap-1 cursor-pointer"
           >
             <HelpCircle className="w-3.5 h-3.5" />
-            <span>How it works</span>
+            <span>{t('common.howItWorks')}</span>
           </button>
         )
       }
@@ -76,19 +78,21 @@ export function EvidenceBreakdown({
       {/* Segmented Progress Bar */}
       <div className="mb-6">
         <div className="flex justify-between items-center text-xs text-slate-500 mb-2">
-          <span>Verification Coverage</span>
+          <span>{t('evidence.verificationCoverage')}</span>
           <span className="font-semibold text-slate-900 dark:text-slate-200">
-            {stats.verifiedPercent}% Weighted Trust Score
+            {stats.verifiedPercent}% {t('evidence.weightedTrustScore')}
           </span>
         </div>
         <div className="w-full h-3 rounded-full bg-slate-100 dark:bg-slate-800 flex overflow-hidden gap-0.5">
-          {tiers.map((t) =>
-            t.percent > 0 ? (
+          {tiers.map((tier) =>
+            tier.percent > 0 ? (
               <div
-                key={t.key}
-                className={`${t.barColor} h-full transition-all duration-500`}
-                style={{ width: `${t.percent}%` }}
-                title={`${t.config.label}: ${t.percent}% (${t.count} records)`}
+                key={tier.key}
+                className={`${tier.barColor} h-full transition-all duration-500`}
+                style={{ width: `${tier.percent}%` }}
+                title={`${t(`evidence.statuses.${tier.key}`)}: ${tier.percent}% (${tier.count} ${
+                  tier.count === 1 ? t('common.record') : t('common.records')
+                })`}
               />
             ) : null
           )}
@@ -110,9 +114,11 @@ export function EvidenceBreakdown({
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400">
               <p className="font-medium text-slate-800 dark:text-slate-200">
-                {tier.count} {tier.count === 1 ? 'record' : 'records'}
+                {tier.count} {tier.count === 1 ? t('common.record') : t('common.records')}
               </p>
-              <p className="text-[11px] mt-0.5 line-clamp-2">{tier.config.description}</p>
+              <p className="text-[11px] mt-0.5 line-clamp-2">
+                {t(`evidence.descriptions.${tier.key}`) || tier.config.description}
+              </p>
             </div>
           </div>
         ))}

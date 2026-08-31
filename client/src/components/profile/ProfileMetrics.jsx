@@ -1,15 +1,17 @@
 import Card from '../common/Card';
 import ProgressBar from '../common/ProgressBar';
 import Badge from '../common/Badge';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable ProfileMetrics component
+ * Reusable ProfileMetrics component with localization
  *
  * @param {Object} props
  * @param {Object} props.profile
  * @param {string} [props.className='']
  */
 export function ProfileMetrics({ profile, className = '' }) {
+  const { t } = useLanguage();
   if (!profile) return null;
 
   const scorePct = Math.round((profile.footprintScore / (profile.footprintScoreMax || 900)) * 100);
@@ -20,9 +22,9 @@ export function ProfileMetrics({ profile, className = '' }) {
       <Card className="flex flex-col justify-between">
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase">Trust Score</span>
+            <span className="text-xs font-semibold text-slate-500 uppercase">{t('profile.trustScore')}</span>
             <Badge variant="indigo" size="sm">
-              Grade {profile.trustGrade}
+              {t('lenderReport.gradePrefix')} {profile.trustGrade}
             </Badge>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
@@ -34,7 +36,7 @@ export function ProfileMetrics({ profile, className = '' }) {
           <ProgressBar value={scorePct} variant="gradient" height="sm" />
         </div>
         <p className="text-[11px] text-slate-500 mt-3">
-          Top 8% among regional electrical & hardware micro-enterprises
+          {t('common.topPercent')}
         </p>
       </Card>
 
@@ -42,9 +44,9 @@ export function ProfileMetrics({ profile, className = '' }) {
       <Card className="flex flex-col justify-between">
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase">Stability Index</span>
+            <span className="text-xs font-semibold text-slate-500 uppercase">{t('profile.stabilityIndex')}</span>
             <Badge variant="emerald" size="sm">
-              Strong
+              {t('profile.strong')}
             </Badge>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
@@ -55,7 +57,7 @@ export function ProfileMetrics({ profile, className = '' }) {
           <ProgressBar value={profile.stabilityScore} variant="emerald" height="sm" />
         </div>
         <p className="text-[11px] text-slate-500 mt-3">
-          Calculated across 6-month recurring cash inflows
+          {t('profile.stabilitySubtitle')}
         </p>
       </Card>
 
@@ -63,9 +65,9 @@ export function ProfileMetrics({ profile, className = '' }) {
       <Card className="flex flex-col justify-between">
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase">Repayment Track</span>
+            <span className="text-xs font-semibold text-slate-500 uppercase">{t('profile.repaymentTrack')}</span>
             <Badge variant="emerald" size="sm">
-              94% Timely
+              {t('profile.timely')}
             </Badge>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
@@ -76,7 +78,7 @@ export function ProfileMetrics({ profile, className = '' }) {
           <ProgressBar value={profile.repaymentDiscipline} variant="emerald" height="sm" />
         </div>
         <p className="text-[11px] text-slate-500 mt-3">
-          100% on-time utility & vendor supplier payments
+          {t('profile.repaymentSubtitle')}
         </p>
       </Card>
 
@@ -84,9 +86,9 @@ export function ProfileMetrics({ profile, className = '' }) {
       <Card className="flex flex-col justify-between">
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase">Evidence Ratio</span>
+            <span className="text-xs font-semibold text-slate-500 uppercase">{t('profile.evidenceRatio')}</span>
             <Badge variant="blue" size="sm">
-              Auditable
+              {t('profile.auditable')}
             </Badge>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
@@ -97,7 +99,7 @@ export function ProfileMetrics({ profile, className = '' }) {
           <ProgressBar value={profile.verificationCoverage} variant="blue" height="sm" />
         </div>
         <p className="text-[11px] text-slate-500 mt-3">
-          Corroborated via GSTN & Account Aggregator
+          {t('profile.evidenceSubtitle')}
         </p>
       </Card>
     </div>
