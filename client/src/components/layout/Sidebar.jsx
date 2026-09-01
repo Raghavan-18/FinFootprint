@@ -6,8 +6,10 @@ import {
   User,
   FileSpreadsheet,
   ShieldCheck,
+  LogOut,
 } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { useAuth } from '../../context/AuthContext';
 
 /**
  * Reusable Sidebar Navigation Component
@@ -25,6 +27,7 @@ export function Sidebar({
   className = '',
 }) {
   const { t } = useLanguage();
+  const { logout, isAuthenticated } = useAuth();
 
   const navItems = [
     { id: 'dashboard', label: t('navigation.dashboard'), icon: LayoutDashboard },
@@ -34,6 +37,15 @@ export function Sidebar({
     { id: 'profile', label: t('navigation.profile'), icon: User },
     { id: 'lender-report', label: t('navigation.lenderReport'), icon: FileSpreadsheet, badge: t('navigation.primeBadge') },
   ];
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      onSelectTab('login');
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
+  };
 
   return (
     <aside
@@ -75,19 +87,31 @@ export function Sidebar({
               </button>
             );
           })}
+
+          {isAuthenticated && (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all duration-150 cursor-pointer mt-2"
+            >
+              <LogOut className="w-4 h-4 shrink-0" />
+              <span className="truncate">{t('auth.common.logout')}</span>
+            </button>
+          )}
         </nav>
       </div>
+
 
       {/* Bottom Trust Card */}
       <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-50 to-slate-100 dark:from-slate-800/80 dark:to-slate-900 border border-indigo-100 dark:border-slate-700/60">
         <div className="flex items-center gap-2 mb-1.5">
           <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
           <span className="text-xs font-bold text-slate-900 dark:text-white">
-            {t('sidebar.trustRating')} {profile?.trustGrade || 'A'}
+            {t('sidebar.trustRating')} {profile?.trustGrade && profile?.trustGrade !== '—' ? profile.trustGrade : '—'}
           </span>
         </div>
         <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
-          {t('sidebar.alternativeScore')} <strong>{profile?.footprintScore || 784}</strong>
+          {t('sidebar.alternativeScore')} <strong>{profile?.footprintScore ? profile.footprintScore : '—'}</strong>
         </p>
       </div>
     </aside>

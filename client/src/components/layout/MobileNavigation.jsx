@@ -7,8 +7,10 @@ import {
   FileSpreadsheet,
   X,
   Globe,
+  LogOut,
 } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { useAuth } from '../../context/AuthContext';
 
 /**
  * Reusable MobileNavigation component
@@ -28,6 +30,7 @@ export function MobileNavigation({
   profile,
 }) {
   const { language, setLanguage, t } = useLanguage();
+  const { logout, isAuthenticated } = useAuth();
 
   const navItems = [
     { id: 'dashboard', label: t('navigation.dashboard'), icon: LayoutDashboard },
@@ -122,6 +125,21 @@ export function MobileNavigation({
                     </button>
                   );
                 })}
+
+                {isAuthenticated && (
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      onClose();
+                      await logout();
+                      onSelectTab('login');
+                    }}
+                    className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer mt-2"
+                  >
+                    <LogOut className="w-4 h-4 shrink-0" />
+                    <span className="truncate">{t('auth.common.logout')}</span>
+                  </button>
+                )}
               </div>
             </div>
 

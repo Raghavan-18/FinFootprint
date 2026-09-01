@@ -19,6 +19,7 @@ export function RecentActivity({
   isLoading = false,
   onSelectTransaction,
   onViewAll,
+  onAddActivity,
   className = '',
 }) {
   const { t } = useLanguage();
@@ -46,6 +47,7 @@ export function RecentActivity({
         transactions={transactions}
         isLoading={isLoading}
         onSelectTransaction={onSelectTransaction}
+        onEmptyAction={onAddActivity}
         limit={5}
         compact={false}
       />

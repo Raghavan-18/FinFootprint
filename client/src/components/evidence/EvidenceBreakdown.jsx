@@ -57,6 +57,8 @@ export function EvidenceBreakdown({
     },
   ];
 
+  const hasRecords = stats.totalCount > 0;
+
   return (
     <Card
       title={t('evidence.breakdownTitle')}
@@ -80,21 +82,25 @@ export function EvidenceBreakdown({
         <div className="flex justify-between items-center text-xs text-slate-500 mb-2">
           <span>{t('evidence.verificationCoverage')}</span>
           <span className="font-semibold text-slate-900 dark:text-slate-200">
-            {stats.verifiedPercent}% {t('evidence.weightedTrustScore')}
+            {hasRecords ? `${stats.verifiedPercent}% ${t('evidence.weightedTrustScore')}` : '—'}
           </span>
         </div>
         <div className="w-full h-3 rounded-full bg-slate-100 dark:bg-slate-800 flex overflow-hidden gap-0.5">
-          {tiers.map((tier) =>
-            tier.percent > 0 ? (
-              <div
-                key={tier.key}
-                className={`${tier.barColor} h-full transition-all duration-500`}
-                style={{ width: `${tier.percent}%` }}
-                title={`${t(`evidence.statuses.${tier.key}`)}: ${tier.percent}% (${tier.count} ${
-                  tier.count === 1 ? t('common.record') : t('common.records')
-                })`}
-              />
-            ) : null
+          {hasRecords ? (
+            tiers.map((tier) =>
+              tier.percent > 0 ? (
+                <div
+                  key={tier.key}
+                  className={`${tier.barColor} h-full transition-all duration-500`}
+                  style={{ width: `${tier.percent}%` }}
+                  title={`${t(`evidence.statuses.${tier.key}`)}: ${tier.percent}% (${tier.count} ${
+                    tier.count === 1 ? t('common.record') : t('common.records')
+                  })`}
+                />
+              ) : null
+            )
+          ) : (
+            <div className="w-full h-full bg-slate-100 dark:bg-slate-800" />
           )}
         </div>
       </div>

@@ -14,7 +14,10 @@ export function ProfileMetrics({ profile, className = '' }) {
   const { t } = useLanguage();
   if (!profile) return null;
 
-  const scorePct = Math.round((profile.footprintScore / (profile.footprintScoreMax || 900)) * 100);
+  const hasScore = Boolean(profile.footprintScore && profile.footprintScore > 0);
+  const scorePct = hasScore
+    ? Math.round((profile.footprintScore / (profile.footprintScoreMax || 900)) * 100)
+    : 0;
 
   return (
     <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ${className}`}>
@@ -23,20 +26,20 @@ export function ProfileMetrics({ profile, className = '' }) {
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-slate-500 uppercase">{t('profile.trustScore')}</span>
-            <Badge variant="indigo" size="sm">
-              {t('lenderReport.gradePrefix')} {profile.trustGrade}
+            <Badge variant={hasScore ? "indigo" : "default"} size="sm">
+              {hasScore ? `${t('lenderReport.gradePrefix')} ${profile.trustGrade}` : '—'}
             </Badge>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
             <span className="text-3xl font-extrabold text-slate-900 dark:text-white">
-              {profile.footprintScore}
+              {hasScore ? profile.footprintScore : '—'}
             </span>
-            <span className="text-xs text-slate-400">/ {profile.footprintScoreMax || 900}</span>
+            {hasScore && <span className="text-xs text-slate-400">/ {profile.footprintScoreMax || 900}</span>}
           </div>
           <ProgressBar value={scorePct} variant="gradient" height="sm" />
         </div>
         <p className="text-[11px] text-slate-500 mt-3">
-          {t('common.topPercent')}
+          {hasScore ? t('common.topPercent') : t('dashboard.newOnboardingSubtitle')}
         </p>
       </Card>
 
@@ -45,16 +48,16 @@ export function ProfileMetrics({ profile, className = '' }) {
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-slate-500 uppercase">{t('profile.stabilityIndex')}</span>
-            <Badge variant="emerald" size="sm">
-              {t('profile.strong')}
+            <Badge variant={profile.stabilityScore > 0 ? "emerald" : "default"} size="sm">
+              {profile.stabilityScore > 0 ? t('profile.strong') : '—'}
             </Badge>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
             <span className="text-3xl font-extrabold text-slate-900 dark:text-white">
-              {profile.stabilityScore}%
+              {profile.stabilityScore > 0 ? `${profile.stabilityScore}%` : '—'}
             </span>
           </div>
-          <ProgressBar value={profile.stabilityScore} variant="emerald" height="sm" />
+          <ProgressBar value={profile.stabilityScore || 0} variant="emerald" height="sm" />
         </div>
         <p className="text-[11px] text-slate-500 mt-3">
           {t('profile.stabilitySubtitle')}
@@ -66,16 +69,16 @@ export function ProfileMetrics({ profile, className = '' }) {
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-slate-500 uppercase">{t('profile.repaymentTrack')}</span>
-            <Badge variant="emerald" size="sm">
-              {t('profile.timely')}
+            <Badge variant={profile.repaymentDiscipline > 0 ? "emerald" : "default"} size="sm">
+              {profile.repaymentDiscipline > 0 ? t('profile.timely') : '—'}
             </Badge>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
             <span className="text-3xl font-extrabold text-slate-900 dark:text-white">
-              {profile.repaymentDiscipline}%
+              {profile.repaymentDiscipline > 0 ? `${profile.repaymentDiscipline}%` : '—'}
             </span>
           </div>
-          <ProgressBar value={profile.repaymentDiscipline} variant="emerald" height="sm" />
+          <ProgressBar value={profile.repaymentDiscipline || 0} variant="emerald" height="sm" />
         </div>
         <p className="text-[11px] text-slate-500 mt-3">
           {t('profile.repaymentSubtitle')}
@@ -87,16 +90,16 @@ export function ProfileMetrics({ profile, className = '' }) {
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-slate-500 uppercase">{t('profile.evidenceRatio')}</span>
-            <Badge variant="blue" size="sm">
-              {t('profile.auditable')}
+            <Badge variant={profile.verificationCoverage > 0 ? "blue" : "default"} size="sm">
+              {profile.verificationCoverage > 0 ? t('profile.auditable') : '—'}
             </Badge>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
             <span className="text-3xl font-extrabold text-slate-900 dark:text-white">
-              {profile.verificationCoverage}%
+              {profile.verificationCoverage > 0 ? `${profile.verificationCoverage}%` : '—'}
             </span>
           </div>
-          <ProgressBar value={profile.verificationCoverage} variant="blue" height="sm" />
+          <ProgressBar value={profile.verificationCoverage || 0} variant="blue" height="sm" />
         </div>
         <p className="text-[11px] text-slate-500 mt-3">
           {t('profile.evidenceSubtitle')}

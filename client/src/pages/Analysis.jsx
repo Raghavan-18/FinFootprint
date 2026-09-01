@@ -3,6 +3,7 @@ import PageHeader from '../components/common/PageHeader';
 import AnalysisExplanation from '../components/analysis/AnalysisExplanation';
 import AnalysisCard from '../components/analysis/AnalysisCard';
 import AnomalyCard from '../components/analysis/AnomalyCard';
+import EmptyState from '../components/common/EmptyState';
 import TransactionDetailsModal from '../components/transactions/TransactionDetailsModal';
 import LoadingState from '../components/common/LoadingState';
 import { useLanguage } from '../hooks/useLanguage';
@@ -23,10 +24,10 @@ export function Analysis({
   const [selectedTx, setSelectedTx] = useState(null);
 
   if (isLoading) {
-    return <LoadingState message={t('common.loadingData')} />;
+    return <LoadingState message={t('dashboard.loading')} />;
   }
 
-  const { metrics = [], anomalies = [] } = analysisData || {};
+  const { metrics = [], anomalies = [], hasSufficientData } = analysisData || {};
 
   const handleViewFlaggedTransaction = (txId) => {
     const found = transactions.find((t) => t.id === txId);
@@ -115,50 +116,61 @@ export function Analysis({
         ]}
       />
 
-      {/* AI Synthesis Header */}
-      <AnalysisExplanation />
+      {!hasSufficientData || metrics.length === 0 ? (
+        <EmptyState
+          title={t('dashboard.noAnalysis')}
+          description={t('dashboard.noAnalysisDescription')}
+          buttonText={t('history.addActivity')}
+          onAction={() => onNavigate('add-activity')}
+        />
+      ) : (
+        <>
+          {/* AI Synthesis Header */}
+          <AnalysisExplanation />
 
-      {/* Grid of Key Metrics */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-            {t('analysis.corePillars')}
-          </h3>
-          <span className="text-xs text-slate-500">
-            {t('analysis.predictiveSignals')}
-          </span>
-        </div>
+          {/* Grid of Key Metrics */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                {t('analysis.corePillars')}
+              </h3>
+              <span className="text-xs text-slate-500">
+                {t('analysis.predictiveSignals')}
+              </span>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {localizedMetrics.map((metric) => (
-            <AnalysisCard key={metric.id} metric={metric} />
-          ))}
-        </div>
-      </div>
-
-      {/* Anomalies / Flagged Items */}
-      {anomalies.length > 0 && (
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-              {t('analysis.anomalySectionTitle')}
-            </h3>
-            <span className="text-xs text-rose-500 font-semibold">
-              {t('analysis.flaggedReview', { count: anomalies.length })}
-            </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {localizedMetrics.map((metric) => (
+                <AnalysisCard key={metric.id} metric={metric} />
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {anomalies.map((anom) => (
-              <AnomalyCard
-                key={anom.id}
-                anomaly={anom}
-                onViewTransaction={handleViewFlaggedTransaction}
-                onResolve={(a) => alert(`Resolving verification for: ${a.title}`)}
-              />
-            ))}
-          </div>
-        </div>
+          {/* Anomalies / Flagged Items */}
+          {anomalies.length > 0 && (
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                  {t('analysis.anomalySectionTitle')}
+                </h3>
+                <span className="text-xs text-rose-500 font-semibold">
+                  {t('analysis.flaggedReview', { count: anomalies.length })}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {anomalies.map((anom) => (
+                  <AnomalyCard
+                    key={anom.id}
+                    anomaly={anom}
+                    onViewTransaction={handleViewFlaggedTransaction}
+                    onResolve={(a) => alert(`Resolving verification for: ${a.title}`)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Transaction Modal */}

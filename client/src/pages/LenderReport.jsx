@@ -1,5 +1,6 @@
 import PageHeader from '../components/common/PageHeader';
 import LenderReport from '../components/lender/LenderReport';
+import EmptyState from '../components/common/EmptyState';
 import LoadingState from '../components/common/LoadingState';
 import { useLanguage } from '../hooks/useLanguage';
 
@@ -18,7 +19,7 @@ export function LenderReportPage({
   const { t } = useLanguage();
 
   if (isLoading) {
-    return <LoadingState message={t('common.loadingData')} />;
+    return <LoadingState message={t('dashboard.loading')} />;
   }
 
   return (
@@ -32,7 +33,16 @@ export function LenderReportPage({
         ]}
       />
 
-      <LenderReport report={report} profile={profile} stats={stats} />
+      {!report ? (
+        <EmptyState
+          title={t('dashboard.noLenderReport')}
+          description={t('dashboard.noLenderReportDescription')}
+          buttonText={t('history.addActivity')}
+          onAction={() => onNavigate('add-activity')}
+        />
+      ) : (
+        <LenderReport report={report} profile={profile} stats={stats} />
+      )}
     </div>
   );
 }

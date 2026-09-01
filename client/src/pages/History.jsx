@@ -107,12 +107,16 @@ export function History({
           transactions={filteredTransactions}
           isLoading={isLoading}
           onSelectTransaction={(tx) => setSelectedTransaction(tx)}
-          emptyTitle={t('history.noMatching')}
-          emptyDescription={t('history.noMatchingDesc')}
+          emptyTitle={transactions.length === 0 ? t('history.noHistory') : t('history.noMatching')}
+          emptyDescription={transactions.length === 0 ? t('history.noHistoryDescription') : t('history.noMatchingDesc')}
+          emptyButtonText={transactions.length === 0 ? t('history.addActivity') : undefined}
+          onEmptyAction={transactions.length === 0 ? () => onNavigate('add-activity') : undefined}
           emptyAction={
-            <Button variant="outline" size="sm" onClick={handleResetFilters}>
-              {t('common.resetFilters')}
-            </Button>
+            transactions.length > 0 ? (
+              <Button variant="outline" size="sm" onClick={handleResetFilters}>
+                {t('common.resetFilters')}
+              </Button>
+            ) : null
           }
         />
       </div>

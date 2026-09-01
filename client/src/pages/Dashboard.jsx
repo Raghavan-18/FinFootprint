@@ -28,7 +28,7 @@ export function Dashboard({
   const [isEvidenceModalOpen, setIsEvidenceModalOpen] = useState(false);
 
   if (isLoading) {
-    return <LoadingState message={t('common.loadingData')} />;
+    return <LoadingState message={t('dashboard.loading')} />;
   }
 
   return (
@@ -62,6 +62,7 @@ export function Dashboard({
         isLoading={isLoading}
         onSelectTransaction={(tx) => setSelectedTransaction(tx)}
         onViewAll={() => onNavigate('history')}
+        onAddActivity={() => onNavigate('add-activity')}
       />
 
       {/* Reusable Modals */}

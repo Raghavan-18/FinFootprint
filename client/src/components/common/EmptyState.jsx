@@ -1,4 +1,5 @@
-import { Inbox } from 'lucide-react';
+import { Inbox, Plus } from 'lucide-react';
+import Button from './Button';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
@@ -8,6 +9,8 @@ import { useLanguage } from '../../hooks/useLanguage';
  * @param {React.ReactNode} [props.icon]
  * @param {string} [props.title]
  * @param {string} [props.description]
+ * @param {string} [props.buttonText]
+ * @param {Function} [props.onAction]
  * @param {React.ReactNode} [props.action]
  * @param {string} [props.className='']
  */
@@ -15,6 +18,8 @@ export function EmptyState({
   icon = null,
   title,
   description,
+  buttonText,
+  onAction,
   action = null,
   className = '',
 }) {
@@ -33,7 +38,21 @@ export function EmptyState({
       <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-sm">
         {description || t('common.noRecordsDesc')}
       </p>
-      {action && <div className="mt-5">{action}</div>}
+
+      {buttonText && onAction && (
+        <div className="mt-5">
+          <Button
+            variant="primary"
+            size="md"
+            icon={<Plus className="w-4 h-4" />}
+            onClick={onAction}
+          >
+            {buttonText}
+          </Button>
+        </div>
+      )}
+
+      {action && !buttonText && <div className="mt-5">{action}</div>}
     </div>
   );
 }

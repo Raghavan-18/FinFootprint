@@ -41,11 +41,11 @@ export function WelcomeSection({
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-            {t('dashboard.welcomeTitle')} {profile?.fullName || 'Business Owner'}
+            {t('dashboard.welcomeTitle')} {profile?.fullName || 'User'}
           </h1>
           <p className="text-sm text-indigo-200/80 mt-1 max-w-2xl">
-            {profile?.businessName || 'Micro-Enterprise & Electrical Services'} •{' '}
-            <span className="text-indigo-100">{profile?.city || 'Pune, Maharashtra'}</span>
+            {profile?.businessName || 'Micro-Enterprise'} •{' '}
+            <span className="text-indigo-100">{profile?.city || 'India'}</span>
           </p>
         </div>
 

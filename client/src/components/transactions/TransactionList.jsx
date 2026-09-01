@@ -25,6 +25,8 @@ export function TransactionList({
   compact = false,
   emptyTitle,
   emptyDescription,
+  emptyButtonText,
+  onEmptyAction,
   emptyAction = null,
   className = '',
 }) {
@@ -41,8 +43,10 @@ export function TransactionList({
   if (displayedTransactions.length === 0) {
     return (
       <EmptyState
-        title={emptyTitle || t('transactions.emptyTitle')}
-        description={emptyDescription || t('transactions.emptyDesc')}
+        title={emptyTitle || t('dashboard.noActivity')}
+        description={emptyDescription || t('dashboard.noActivityDescription')}
+        buttonText={emptyButtonText !== undefined ? emptyButtonText : (onEmptyAction ? t('dashboard.addFirstActivity') : undefined)}
+        onAction={onEmptyAction}
         action={emptyAction}
         className={className}
       />

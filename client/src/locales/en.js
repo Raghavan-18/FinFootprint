@@ -101,6 +101,19 @@ export const en = {
     monthsReserve: 'Months Reserve',
     recentActivityTitle: 'Recent Activity',
     recentActivitySubtitle: 'Latest financial logs with system-evaluated evidence classification',
+    noActivity: 'No financial activity yet',
+    noActivityDescription: 'Your recorded financial activities will appear here.',
+    addFirstActivity: 'Add Your First Activity',
+    loading: 'Loading your financial footprint...',
+    noAnalysis: 'Not enough financial activity for analysis.',
+    noAnalysisDescription: 'Record financial activity to build enough data for behavioural analysis.',
+    noLenderReport: 'Lender report is not available yet.',
+    noLenderReportDescription: 'Build your financial footprint by recording financial activities and supporting evidence.',
+    observationNotStarted: 'Not started',
+    noEvidence: 'No evidence yet',
+    emptyChart: 'Your financial activity trend will appear here once you add transactions.',
+    welcomeNewUser: 'Welcome to FinFootprint,',
+    newOnboardingSubtitle: 'Start building your financial footprint by recording your first financial activity.',
   },
 
   activity: {
@@ -183,6 +196,9 @@ export const en = {
     allTiers: 'All Evidence Tiers',
     noMatching: 'No matching transactions found',
     noMatchingDesc: 'Try resetting your search query or selecting a different filter.',
+    noHistory: 'No financial history yet',
+    noHistoryDescription: 'Your recorded activities will appear here.',
+    addActivity: 'Add Activity',
   },
 
   evidence: {
@@ -371,6 +387,97 @@ export const en = {
     gradePrefix: 'Grade',
   },
 
+  auth: {
+    incorrectPassword: 'Incorrect password.',
+    login: {
+      title: 'Welcome back',
+      subtitle: 'Sign in to continue building your financial footprint.',
+      email: 'Email Address',
+      emailPlaceholder: 'Enter your email',
+      password: 'Password',
+      passwordPlaceholder: 'Enter your password',
+      rememberMe: 'Remember me',
+      forgotPassword: 'Forgot password?',
+      signIn: 'Sign In',
+      signingIn: 'Signing in...',
+      continueWithGoogle: 'Continue with Google',
+      noAccount: "Don't have an account?",
+      createAccount: 'Create Account',
+    },
+
+    signup: {
+      title: 'Create your FinFootprint account',
+      subtitle: 'Start building your digital financial footprint.',
+      fullName: 'Full Name',
+      fullNamePlaceholder: 'Enter your full name',
+      email: 'Email Address',
+      emailPlaceholder: 'Enter your email',
+      phone: 'Phone Number',
+      phoneOptional: 'Phone Number (Optional)',
+      phonePlaceholder: 'e.g., +91 98765 43210',
+      password: 'Password',
+      passwordPlaceholder: 'Enter your password',
+      confirmPassword: 'Confirm Password',
+      confirmPasswordPlaceholder: 'Confirm your password',
+      passwordRequirement: 'Password must contain at least 8 characters.',
+      terms: 'I agree to the Terms of Service and Privacy Policy.',
+      createAccount: 'Create Account',
+      creatingAccount: 'Creating Account...',
+      continueWithGoogle: 'Continue with Google',
+      haveAccount: 'Already have an account?',
+      signIn: 'Sign In',
+    },
+
+    forgotPassword: {
+      title: 'Reset your password',
+      subtitle: "Enter your email address and we'll send you instructions to reset your password.",
+      email: 'Email Address',
+      emailPlaceholder: 'Enter your email',
+      sendResetLink: 'Send Reset Link',
+      sendingResetLink: 'Sending Reset Link...',
+      backToSignIn: 'Back to Sign In',
+      checkEmail: 'Check your email',
+      checkEmailSubtitle: 'If an account exists for this email, password reset instructions will be sent.',
+      emailSentTo: 'Instructions sent to:',
+      resendLink: 'Resend reset instructions',
+    },
+
+    common: {
+      or: 'OR',
+      continueWithGoogle: 'Continue with Google',
+      showPassword: 'Show password',
+      hidePassword: 'Hide password',
+      secureTrustBadge: 'Lender-Grade 256-bit Encrypted Platform',
+      logout: 'Sign Out',
+    },
+
+    errors: {
+      fullNameRequired: 'Full name is required.',
+      emailRequired: 'Email address is required.',
+      emailInvalid: 'Please enter a valid email address.',
+      passwordRequired: 'Password is required.',
+      passwordMinLength: 'Password must contain at least 8 characters.',
+      confirmPasswordRequired: 'Please confirm your password.',
+      passwordsDoNotMatch: 'Passwords do not match.',
+      termsRequired: 'You must agree to the Terms of Service and Privacy Policy.',
+      loginFailed: 'Invalid email or password. Please try again.',
+      signupFailed: 'Unable to create account. Please try again.',
+      resetFailed: 'Failed to send password reset email. Please try again.',
+      invalidCredential: 'Invalid email address or password. Please check your credentials.',
+      emailAlreadyInUse: 'An account with this email address already exists. Please sign in instead.',
+      weakPassword: 'The password is too weak. Please use at least 8 characters with letters and numbers.',
+      invalidEmail: 'The email address format is not valid.',
+      userNotFound: 'No account found with this email address.',
+      wrongPassword: 'Incorrect password. Please try again or reset your password.',
+      networkError: 'Network connection issue. Please check your internet and try again.',
+      tooManyRequests: 'Too many unsuccessful attempts. Please wait a moment before trying again.',
+      popupClosed: 'Sign in was cancelled or the popup was closed before completing.',
+      userDisabled: 'This user account has been disabled. Please contact support.',
+      requiresRecentLogin: 'Please sign in again to perform this sensitive action.',
+      genericError: 'Authentication error occurred. Please try again.',
+    },
+  },
+
   validation: {
     requiredFields: 'Please provide an activity title and valid amount.',
     failedToAdd: 'Failed to record activity. Please try again.',
@@ -378,3 +485,6 @@ export const en = {
 };
 
 export default en;
+
+
+
