@@ -16,8 +16,8 @@ import {
 } from '../data/mockData';
 import { evaluateEvidence } from './evidenceService';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
-const USE_MOCK = true; // Can be toggled with environment variable VITE_USE_MOCK
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001/api';
+const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'; // Can be toggled with environment variable VITE_USE_MOCK
 
 // In-memory transaction store for interactive actions (e.g. adding activity)
 let inMemoryTransactions = [...mockTransactions];
