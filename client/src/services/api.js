@@ -1,198 +1,182 @@
 /**
- * API Service Layer for FinFootprint
+ * Clean REST API Service Layer for FinFootprint
  *
- * Implements a clean client interface. Currently delivers data from mock storage,
- * with structured latency simulation and easy drop-in replacement for FastAPI endpoints.
+ * Handles all frontend -> backend HTTP communication with FastAPI server.
+ * Connects to Evidence Engine and ML Services while supporting structured errors.
  */
 
-import {
-  mockProfile,
-  mockFinancialStats,
-  mockMonthlyCashflows,
-  mockTransactions,
-  mockAnalysisMetrics,
-  mockAnomalies,
-  mockLenderReport,
-} from '../data/mockData';
-import { evaluateEvidence } from './evidenceService';
-
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001/api';
-const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'; // Can be toggled with environment variable VITE_USE_MOCK
-
-// In-memory transaction store for interactive actions (e.g. adding activity)
-let inMemoryTransactions = [...mockTransactions];
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 /**
- * Helper to simulate network latency for responsive UI testing
+ * Standard HTTP request wrapper with timeout and robust error formatting
+ *
+ * @param {string} endpoint - Path (e.g. '/api/health' or '/api/analyze/activity')
+ * @param {RequestInit} [options] - Fetch options
+ * @returns {Promise<Object>} Formatted API response
  */
-const simulateLatency = (ms = 150) => new Promise((resolve) => setTimeout(resolve, ms));
+async function request(endpoint, options = {}) {
+  const url = `${API_BASE_URL.replace(/\/+$/, '')}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
 
+  const defaultHeaders = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  };
+
+  const config = {
+    ...options,
+    headers: {
+      ...defaultHeaders,
+      ...options.headers,
+    },
+  };
+
+  try {
+    const response = await fetch(url, config);
+
+    let data;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      data = { raw: text };
+    }
+
+    if (!response.ok) {
+      const errorMessage =
+        data?.error?.message ||
+        data?.message ||
+        data?.detail ||
+        `Request failed with status ${response.status}`;
+
+      return {
+        success: false,
+        status: response.status,
+        error: {
+          code: data?.error?.code || `HTTP_${response.status}`,
+          message: errorMessage,
+        },
+      };
+    }
+
+    // If backend already returned { success: true, data: ... }
+    if (data && typeof data === 'object' && 'success' in data) {
+      return data;
+    }
+
+    return {
+      success: true,
+      data,
+    };
+  } catch (err) {
+    console.error(`[FinFootprint API Error] ${endpoint}:`, err);
+    return {
+      success: false,
+      status: 0,
+      error: {
+        code: 'NETWORK_ERROR',
+        message: 'Unable to connect to the analysis service. Please check your connection or backend server.',
+        originalError: err.message,
+      },
+    };
+  }
+}
+
+/**
+ * API Service Object
+ */
 export const apiService = {
   /**
-   * Fetch User Profile
+   * Health check endpoint to verify Python FastAPI backend status
+   *
+   * @returns {Promise<{success: boolean, data?: {status: string, service: string}, error?: Object}>}
    */
-  async getProfile() {
-    if (USE_MOCK) {
-      await simulateLatency();
-      return { ...mockProfile };
-    }
-    const res = await fetch(`${BASE_URL}/profile`);
-    if (!res.ok) throw new Error('Failed to fetch profile');
-    return res.json();
+  async getHealthCheck() {
+    return request('/api/health', { method: 'GET' });
   },
 
   /**
-   * Fetch Aggregate Financial Stats
+   * Analyze a single financial activity using Evidence Engine on the Python backend
+   *
+   * @param {Object} activityData - Financial activity record
+   * @returns {Promise<{success: boolean, data?: {evidence: Object, analysis: Object}, error?: Object}>}
    */
-  async getFinancialStats() {
-    if (USE_MOCK) {
-      await simulateLatency();
-      return { ...mockFinancialStats };
-    }
-    const res = await fetch(`${BASE_URL}/financial-stats`);
-    if (!res.ok) throw new Error('Failed to fetch financial stats');
-    return res.json();
+  async analyzeFinancialActivity(activityData) {
+    return request('/api/analyze/activity', {
+      method: 'POST',
+      body: JSON.stringify(activityData),
+    });
   },
 
   /**
-   * Fetch Monthly Cashflows
+   * Analyze worker's profile of activities using Python ML engines (behavior & anomalies)
+   *
+   * @param {Object} profileData - Contains { activities: Array<Object> }
+   * @returns {Promise<{success: boolean, data?: {metrics: Array, anomalies: Array, hasSufficientData: boolean}, error?: Object}>}
    */
-  async getCashflows() {
-    if (USE_MOCK) {
-      await simulateLatency();
-      return [...mockMonthlyCashflows];
-    }
-    const res = await fetch(`${BASE_URL}/cashflows`);
-    if (!res.ok) throw new Error('Failed to fetch cashflows');
-    return res.json();
+  async analyzeFinancialProfile(profileData) {
+    return request('/api/analyze/profile', {
+      method: 'POST',
+      body: JSON.stringify(profileData),
+    });
   },
 
   /**
-   * Fetch All Transactions / Activity Logs
-   */
-  async getTransactions(params = {}) {
-    if (USE_MOCK) {
-      await simulateLatency();
-      let list = [...inMemoryTransactions];
-
-      if (params.type && params.type !== 'ALL') {
-        list = list.filter((tx) => tx.type.toUpperCase() === params.type.toUpperCase());
-      }
-      if (params.evidenceStatus && params.evidenceStatus !== 'ALL') {
-        list = list.filter(
-          (tx) => tx.evidenceStatus.toUpperCase() === params.evidenceStatus.toUpperCase()
-        );
-      }
-      if (params.search) {
-        const query = params.search.toLowerCase();
-        list = list.filter(
-          (tx) =>
-            tx.title.toLowerCase().includes(query) ||
-            tx.counterparty.toLowerCase().includes(query) ||
-            tx.category.toLowerCase().includes(query) ||
-            (tx.referenceId && tx.referenceId.toLowerCase().includes(query)) ||
-            (tx.reference && tx.reference.toLowerCase().includes(query))
-        );
-      }
-
-      return list;
-    }
-
-    const queryParams = new URLSearchParams(params).toString();
-    const res = await fetch(`${BASE_URL}/transactions?${queryParams}`);
-    if (!res.ok) throw new Error('Failed to fetch transactions');
-    return res.json();
-  },
-
-  /**
-   * Primary method: Submit Financial Activity and evaluate evidence
-   * Temporary frontend simulation. Replace with FastAPI evidence engine endpoint.
+   * Submit/Record activity alias
+   *
+   * @param {Object} payload
    */
   async submitFinancialActivity(payload) {
-    if (USE_MOCK) {
-      await simulateLatency(350);
-
-      // Evaluate evidence using the mock evidence engine
-      const evidenceAssessment = evaluateEvidence(payload);
-
-      const newTx = {
-        id: `tx_${Date.now()}`,
-        title: payload.title || 'Declared Activity',
-        type: payload.type || 'INCOME',
-        category: payload.category || 'General',
-        amount: Number(payload.amount) || 0,
-        date: payload.date || new Date().toISOString().split('T')[0],
-        counterparty: payload.counterparty || 'Self / Counterparty',
-        paymentMethod: payload.paymentMethod || 'CASH',
-        reference: payload.reference || payload.referenceId || '',
-        referenceId: payload.reference || payload.referenceId || '',
-        proofAttached: Boolean(payload.proofFileName || payload.proofDocument),
-        proofFileName: payload.proofFileName || payload.proofDocument || null,
-        proofDocument: payload.proofFileName || payload.proofDocument || null,
-        notes: payload.notes || '',
-        evidenceStatus: evidenceAssessment.status,
-        confidenceScore: evidenceAssessment.confidenceScore,
-        evidence: {
-          status: evidenceAssessment.status,
-          explanation: evidenceAssessment.explanation,
-          explanationKey: evidenceAssessment.explanationKey,
-          source: evidenceAssessment.source,
-        },
-        metadata: {
-          submittedVia: 'FinFootprint Web App',
-          paymentChannel: payload.paymentMethod || 'CASH',
-          reconciliationStatus: evidenceAssessment.status === 'VERIFIED' ? 'Verified Online' : 'Pending Verification',
-        },
-      };
-
-      inMemoryTransactions = [newTx, ...inMemoryTransactions];
-      return newTx;
-    }
-
-    const res = await fetch(`${BASE_URL}/transactions`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error('Failed to record activity');
-    return res.json();
+    return this.analyzeFinancialActivity(payload);
   },
 
   /**
-   * Add a new financial transaction / evidence activity (alias to submitFinancialActivity)
+   * Fetch aggregate profile info (FastAPI endpoint)
    */
-  async addActivity(payload) {
-    return this.submitFinancialActivity(payload);
+  async getProfile() {
+    return request('/api/profile', { method: 'GET' });
   },
 
   /**
-   * Fetch Analysis Metrics & Behavioral Insights
+   * Fetch financial stats (FastAPI endpoint)
+   */
+  async getFinancialStats() {
+    return request('/api/financial-stats', { method: 'GET' });
+  },
+
+  /**
+   * Fetch monthly cashflows (FastAPI endpoint)
+   */
+  async getCashflows() {
+    return request('/api/cashflows', { method: 'GET' });
+  },
+
+  /**
+   * Fetch transactions (FastAPI endpoint)
+   */
+  async getTransactions(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return request(`/api/transactions${query ? `?${query}` : ''}`, { method: 'GET' });
+  },
+
+  /**
+   * Fetch full analysis report (FastAPI endpoint)
    */
   async getAnalysis() {
-    if (USE_MOCK) {
-      await simulateLatency();
-      return {
-        metrics: [...mockAnalysisMetrics],
-        anomalies: [...mockAnomalies],
-      };
-    }
-    const res = await fetch(`${BASE_URL}/analysis`);
-    if (!res.ok) throw new Error('Failed to fetch analysis');
-    return res.json();
+    return request('/api/analysis', { method: 'GET' });
   },
 
   /**
-   * Fetch Lender Underwriting Report
+   * Fetch institutional lender report (FastAPI endpoint)
    */
   async getLenderReport() {
-    if (USE_MOCK) {
-      await simulateLatency();
-      return { ...mockLenderReport };
-    }
-    const res = await fetch(`${BASE_URL}/lender-report`);
-    if (!res.ok) throw new Error('Failed to fetch lender report');
-    return res.json();
+    return request('/api/lender-report', { method: 'GET' });
   },
 };
+
+// Also export standalone helper functions for direct import
+export const getHealthCheck = () => apiService.getHealthCheck();
+export const analyzeFinancialActivity = (data) => apiService.analyzeFinancialActivity(data);
+export const analyzeFinancialProfile = (data) => apiService.analyzeFinancialProfile(data);
 
 export default apiService;

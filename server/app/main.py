@@ -35,9 +35,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.evidence_engine import classify_evidence
 from app.ml_engine import analyse_financial_behaviour, detect_anomalies
 from app.models import (
+    ActivityAnalysisRequest,
     AnalysisMetricResponse,
     AnalysisResponse,
     EvidenceStatus,
+    ProfileAnalysisRequest,
     TransactionCreate,
     TransactionResponse,
 )
@@ -66,20 +68,26 @@ async def lifespan(app: FastAPI):
 
 # --- App ---
 app = FastAPI(
-    title="FinProof API",
+    title="FinFootprint API",
     description=(
         "Digital Financial Footprint System for informal workers. "
         "Classifies evidence, analyses behaviour, detects anomalies, "
-        "and produces structured financial profiles. "
-        "IMPORTANT: This MVP uses synthetic data."
+        "and produces structured financial profiles."
     ),
     version="0.1.0",
     lifespan=lifespan,
 )
 
+ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -445,9 +453,131 @@ def get_lender_report():
 
 @app.get("/api/health")
 def health_check():
+    """Health check endpoint for React frontend connection status."""
     return {
         "status": "ok",
-        "service": "FinProof API",
+        "service": "FinFootprint API",
         "version": "0.1.0",
         "dataSource": "SYNTHETIC",
+    }
+
+
+# =============================================================
+# Analysis Endpoints for Frontend Integration
+# =============================================================
+
+@app.post("/api/analyze/activity")
+def analyze_activity(payload: ActivityAnalysisRequest):
+    """
+    Analyze a single financial activity using the Evidence Engine.
+    Classifies into VERIFIED, CORROBORATED, SELF_DECLARED, or MISMATCH.
+    """
+    tx_dict = {
+        "id": f"tx_{uuid.uuid4().hex[:8]}",
+        "title": payload.title,
+        "type": (payload.type or "INCOME").upper(),
+        "category": payload.category or "General",
+        "amount": float(payload.amount or 0),
+        "date": payload.date or datetime.now().isoformat(),
+        "counterparty": payload.counterparty or "",
+        "paymentMethod": (payload.paymentMethod or "CASH").upper(),
+        "reference": payload.reference or payload.referenceId or "",
+        "referenceId": payload.reference or payload.referenceId or "",
+        "proofFileName": payload.proofFileName or payload.proofDocument or "",
+        "proofDocument": payload.proofFileName or payload.proofDocument or "",
+        "notes": payload.notes or "",
+    }
+
+    # Generate supporting record for simulation & classify
+    supporting = generate_supporting_record(tx_dict)
+    ev = classify_evidence(tx_dict, supporting)
+
+    status_val = ev["status"].value if hasattr(ev["status"], "value") else str(ev["status"])
+    confidence_score = float(ev.get("confidenceScore", 50))
+    score = round(confidence_score / 100.0, 2)
+
+    # Determine risk level based on evidence classification
+    if status_val in ("VERIFIED", "CORROBORATED"):
+        risk_level = "LOW"
+    elif status_val == "SELF_DECLARED":
+        risk_level = "MEDIUM"
+    else:
+        risk_level = "HIGH"
+
+    return {
+        "success": True,
+        "data": {
+            "evidence": {
+                "status": status_val,
+                "score": score,
+                "confidenceScore": confidence_score,
+                "explanation": ev.get("explanation", "Supporting financial information processed."),
+                "explanationKey": ev.get("explanationKey", f"evidence.assessments.{status_val.lower()}"),
+                "source": ev.get("source", "finproof-evidence-engine"),
+            },
+            "analysis": {
+                "riskLevel": risk_level,
+            },
+        },
+    }
+
+
+@app.post("/api/analyze/profile")
+def analyze_profile(payload: ProfileAnalysisRequest):
+    """
+    Analyze a collection of activities using behaviour & anomaly ML engines.
+    """
+    activities = payload.activities or []
+    if len(activities) < 3:
+        return {
+            "success": True,
+            "data": {
+                "hasSufficientData": False,
+                "metrics": [],
+                "anomalies": [],
+            },
+        }
+
+    # Classify all transactions for evidence results
+    evidence_results = []
+    for a in activities:
+        supp = generate_supporting_record(a)
+        ev = classify_evidence(a, supp)
+        evidence_results.append(ev)
+
+    behaviour_metrics = analyse_financial_behaviour(activities, evidence_results)
+    anomalies = detect_anomalies(activities, evidence_results)
+
+    # Map to frontend-friendly structures
+    metrics_out = []
+    for i, m in enumerate(behaviour_metrics):
+        metrics_out.append({
+            "id": f"metric_{i}",
+            "title": m.metric,
+            "value": m.level,
+            "status": m.level,
+            "description": m.what,
+            "factors": [m.why, m.evidence],
+        })
+
+    anomalies_out = []
+    for a in anomalies:
+        anomalies_out.append({
+            "id": a.id,
+            "transactionId": a.transaction_id,
+            "title": a.title,
+            "severity": a.severity,
+            "date": a.date,
+            "description": a.what,
+            "status": "FLAGGED",
+            "actionRequired": a.recommendation,
+        })
+
+    return {
+        "success": True,
+        "data": {
+            "hasSufficientData": True,
+            "metrics": metrics_out,
+            "anomalies": anomalies_out,
+        },
     }

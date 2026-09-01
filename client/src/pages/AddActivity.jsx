@@ -5,14 +5,16 @@ import Button from '../components/common/Button';
 import SupportingEvidence from '../components/activity/SupportingEvidence';
 import ProcessingState from '../components/activity/ProcessingState';
 import EvidenceAssessmentResult from '../components/activity/EvidenceAssessmentResult';
-import { ArrowDownLeft, ArrowUpRight } from 'lucide-react';
+import { ArrowDownLeft, ArrowUpRight, AlertCircle, Loader2 } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
+import { apiService } from '../services/api';
 
 /**
  * AddActivity Page
  *
  * Log a financial transaction with supporting information and evidence.
- * The system automatically assesses and classifies the evidence tier upon submission.
+ * Communicates with FastAPI Evidence Engine to evaluate evidence tier,
+ * then saves the classified record to user's Firestore footprint.
  */
 export function AddActivity({ onAddActivity, onNavigate }) {
   const { t } = useLanguage();
@@ -32,6 +34,7 @@ export function AddActivity({ onAddActivity, onNavigate }) {
   });
 
   const [isProcessing, setIsProcessing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [assessmentResult, setAssessmentResult] = useState(null);
 
   const categories = {
@@ -69,42 +72,80 @@ export function AddActivity({ onAddActivity, onNavigate }) {
       notes: '',
     });
     setAssessmentResult(null);
+    setErrorMessage('');
     setIsProcessing(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.amount) {
-      alert(t('validation.requiredFields'));
+    if (isProcessing) return; // Prevent duplicate submissions
+
+    if (!formData.title?.trim() || !formData.amount) {
+      setErrorMessage(t('validation.requiredFields') || 'Please fill in all required fields.');
       return;
     }
 
     setIsProcessing(true);
+    setErrorMessage('');
 
     try {
-      // Prepare payload for API / mock evidence engine
-      const payload = {
-        ...formData,
+      // 1. Prepare payload for FastAPI backend analysis
+      const analysisPayload = {
+        title: formData.title.trim(),
+        type: formData.type,
+        category: formData.category,
         amount: Number(formData.amount),
-        reference: formData.paymentMethod === 'CASH' ? '' : formData.reference,
-        referenceId: formData.paymentMethod === 'CASH' ? '' : formData.reference,
+        date: formData.date || new Date().toISOString().split('T')[0],
+        counterparty: formData.counterparty.trim(),
+        paymentMethod: formData.paymentMethod,
+        reference: formData.paymentMethod === 'CASH' ? '' : formData.reference.trim(),
+        referenceId: formData.paymentMethod === 'CASH' ? '' : formData.reference.trim(),
+        invoiceNumber: formData.invoiceNumber.trim(),
+        proofFileName: formData.proofFileName,
         proofDocument: formData.proofFileName,
+        proofAttached: Boolean(formData.proofFileName),
+        notes: formData.notes.trim(),
       };
 
-      // Call parent / API service
-      let result = null;
-      if (onAddActivity) {
-        result = await onAddActivity(payload);
+      // 2. React sends POST /api/analyze/activity to Python FastAPI Evidence Engine
+      const analysisResponse = await apiService.analyzeFinancialActivity(analysisPayload);
+
+      if (!analysisResponse.success) {
+        console.error('[AddActivity Backend Analysis Error]:', analysisResponse.error);
+        setErrorMessage(t('activity.serviceUnavailable') || 'Unable to connect to the analysis service. Please try again.');
+        setIsProcessing(false);
+        return;
       }
 
-      setTimeout(() => {
-        setIsProcessing(false);
-        setAssessmentResult(result || payload);
-      }, 750);
-    } catch (err) {
-      console.error(err);
+      // 3. Extract evidence & ML risk analysis from FastAPI backend
+      const { evidence, analysis } = analysisResponse.data || {};
+
+      const classifiedActivity = {
+        ...analysisPayload,
+        evidenceStatus: evidence?.status || 'SELF_DECLARED',
+        confidenceScore: evidence?.confidenceScore || 50,
+        evidence: evidence || {
+          status: 'SELF_DECLARED',
+          score: 0.4,
+          explanation: 'Information provided by the worker.',
+        },
+        analysis: analysis || {
+          riskLevel: 'LOW',
+        },
+      };
+
+      // 4. Save the verified/classified record to Firestore
+      let savedResult = null;
+      if (onAddActivity) {
+        savedResult = await onAddActivity(classifiedActivity);
+      }
+
+      setAssessmentResult(savedResult || classifiedActivity);
       setIsProcessing(false);
-      alert(t('validation.failedToAdd'));
+    } catch (err) {
+      console.error('[AddActivity Exception]:', err);
+      setErrorMessage(t('activity.serviceUnavailable') || 'Unable to connect to the analysis service. Please try again.');
+      setIsProcessing(false);
     }
   };
 
@@ -311,11 +352,20 @@ export function AddActivity({ onAddActivity, onNavigate }) {
                 />
               </div>
 
+              {/* Error Message Display */}
+              {errorMessage && (
+                <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/80 flex items-start gap-2.5 text-xs text-rose-700 dark:text-rose-300">
+                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600 dark:text-rose-400" />
+                  <div className="flex-1 font-medium">{errorMessage}</div>
+                </div>
+              )}
+
               {/* Submit Buttons */}
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   variant="ghost"
                   size="md"
+                  disabled={isProcessing}
                   onClick={() => onNavigate && onNavigate('dashboard')}
                 >
                   {t('activity.cancelBtn')}
@@ -324,8 +374,10 @@ export function AddActivity({ onAddActivity, onNavigate }) {
                   type="submit"
                   variant="primary"
                   size="md"
+                  disabled={isProcessing}
+                  icon={isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                 >
-                  {t('activity.recordActivityBtn')}
+                  {isProcessing ? t('activity.analyzingBtn') : t('activity.recordActivityBtn')}
                 </Button>
               </div>
             </div>

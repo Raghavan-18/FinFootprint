@@ -1,9 +1,11 @@
+import { useState, useEffect } from 'react';
 import { Menu, Plus, Globe } from 'lucide-react';
 import Button from '../common/Button';
 import { useLanguage } from '../../hooks/useLanguage';
+import { apiService } from '../../services/api';
 
 /**
- * Reusable Navbar Component with Global Language Switcher
+ * Reusable Navbar Component with Global Language Switcher and Backend Health Status
  *
  * @param {Object} props
  * @param {Object} props.profile
@@ -16,6 +18,34 @@ export function Navbar({
   onAddActivity,
 }) {
   const { language, setLanguage, t } = useLanguage();
+  const [backendOnline, setBackendOnline] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function checkHealth() {
+      const res = await apiService.getHealthCheck();
+      if (isMounted) {
+        setBackendOnline(Boolean(res.success && res.data?.status === 'ok'));
+      }
+    }
+
+    checkHealth();
+    const interval = setInterval(checkHealth, 30000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  const initials = (profile?.fullName || 'User')
+    .split(' ')
+    .filter(Boolean)
+    .map((n) => n[0])
+    .join('')
+    .substring(0, 2)
+    .toUpperCase();
 
   return (
     <header className="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
@@ -41,11 +71,11 @@ export function Navbar({
           </div>
         </div>
 
-        {/* Center: Realtime AA Status indicator */}
+        {/* Center: Realtime Backend & AA Status indicator */}
         <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-xs">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-slate-600 dark:text-slate-300 font-medium">
-            {t('navbar.streamActive')}
+          <span className={`w-2 h-2 rounded-full ${backendOnline ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+          <span className="text-slate-700 dark:text-slate-300 font-medium">
+            {backendOnline ? t('activity.backendConnected') : t('activity.backendOffline')}
           </span>
           <span className="text-slate-400 font-mono text-[11px]">| {t('navbar.hdfcSync')}</span>
         </div>
@@ -95,17 +125,14 @@ export function Navbar({
 
           <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-slate-800">
             <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center">
-              {profile?.fullName
-                ?.split(' ')
-                .map((n) => n[0])
-                .join('') || 'RK'}
+              {initials}
             </div>
             <div className="hidden lg:block text-left">
               <p className="text-xs font-semibold text-slate-900 dark:text-white leading-tight">
-                {profile?.fullName || 'Rajesh Kumar'}
+                {profile?.fullName || 'User'}
               </p>
               <p className="text-[11px] text-slate-400 leading-tight">
-                {t('navbar.score')}: <span className="font-bold text-indigo-600 dark:text-indigo-400">{profile?.footprintScore || 784}</span>
+                {t('navbar.score')}: <span className="font-bold text-indigo-600 dark:text-indigo-400">{profile?.footprintScore ? profile.footprintScore : '—'}</span>
               </p>
             </div>
           </div>

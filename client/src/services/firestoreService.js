@@ -175,8 +175,15 @@ export const getFinancialActivities = async (userId, params = {}) => {
 export const createFinancialActivity = async (userId, activityData) => {
   if (!userId) throw new Error('User ID is required to record activity');
 
-  // Evaluate evidence via evidence engine
-  const evidenceAssessment = evaluateEvidence(activityData);
+  // Use backend evidence assessment if provided, else fallback to evidence engine
+  const evidenceAssessment = activityData.evidence || evaluateEvidence(activityData);
+  const status = activityData.evidenceStatus || evidenceAssessment.status || 'SELF_DECLARED';
+  const confidenceScore =
+    activityData.confidenceScore !== undefined
+      ? activityData.confidenceScore
+      : (evidenceAssessment.confidenceScore !== undefined
+          ? evidenceAssessment.confidenceScore
+          : (evidenceAssessment.score ? evidenceAssessment.score * 100 : 50));
 
   const newActivity = {
     title: activityData.title || 'Declared Activity',
@@ -188,23 +195,27 @@ export const createFinancialActivity = async (userId, activityData) => {
     paymentMethod: activityData.paymentMethod || 'CASH',
     reference: activityData.paymentMethod === 'CASH' ? '' : (activityData.reference || activityData.referenceId || ''),
     referenceId: activityData.paymentMethod === 'CASH' ? '' : (activityData.reference || activityData.referenceId || ''),
-    proofAttached: Boolean(activityData.proofFileName || activityData.proofDocument),
+    proofAttached: Boolean(activityData.proofAttached || activityData.proofFileName || activityData.proofDocument),
     proofFileName: activityData.proofFileName || activityData.proofDocument || null,
     proofDocument: activityData.proofFileName || activityData.proofDocument || null,
     invoiceNumber: activityData.invoiceNumber || '',
     notes: activityData.notes || '',
-    evidenceStatus: evidenceAssessment.status,
-    confidenceScore: evidenceAssessment.confidenceScore,
+    evidenceStatus: status,
+    confidenceScore: confidenceScore,
     evidence: {
-      status: evidenceAssessment.status,
-      explanation: evidenceAssessment.explanation,
-      explanationKey: evidenceAssessment.explanationKey,
-      source: 'firestore-evidence-engine',
+      status: status,
+      score: evidenceAssessment.score || Number((confidenceScore / 100).toFixed(2)),
+      explanation: evidenceAssessment.explanation || 'Supporting financial information processed.',
+      explanationKey: evidenceAssessment.explanationKey || `evidence.assessments.${String(status).toLowerCase()}`,
+      source: evidenceAssessment.source || 'finproof-evidence-engine',
+    },
+    analysis: activityData.analysis || {
+      riskLevel: status === 'VERIFIED' || status === 'CORROBORATED' ? 'LOW' : (status === 'SELF_DECLARED' ? 'MEDIUM' : 'HIGH'),
     },
     metadata: {
       submittedVia: 'FinFootprint Web App',
       paymentChannel: activityData.paymentMethod || 'CASH',
-      reconciliationStatus: evidenceAssessment.status === 'VERIFIED' ? 'Verified Online' : 'Pending Verification',
+      reconciliationStatus: status === 'VERIFIED' ? 'Verified Online' : 'Pending Verification',
     },
     createdAt: new Date().toISOString(),
   };

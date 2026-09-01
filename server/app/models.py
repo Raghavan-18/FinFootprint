@@ -66,6 +66,29 @@ class TransactionCreate(BaseModel):
     notes: str = ""
 
 
+class ActivityAnalysisRequest(BaseModel):
+    """Payload for analyzing a financial activity via REST API."""
+    title: str = ""
+    type: str = "INCOME"
+    category: str = "General"
+    amount: float = Field(default=0)
+    date: str = ""
+    counterparty: str = ""
+    paymentMethod: str = "CASH"
+    reference: str = ""
+    referenceId: str = ""
+    invoiceNumber: str = ""
+    proofFileName: str = ""
+    proofDocument: str = ""
+    notes: str = ""
+    proofAttached: bool = False
+
+
+class ProfileAnalysisRequest(BaseModel):
+    """Payload for analyzing multiple financial activities."""
+    activities: list[dict] = []
+
+
 # --- Evidence Models ---
 
 class EvidenceDetail(BaseModel):
