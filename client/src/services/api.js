@@ -5,7 +5,7 @@
  * Connects to Evidence Engine and ML Services while supporting structured errors.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
 
 /**
  * Standard HTTP request wrapper with timeout and robust error formatting

@@ -48,7 +48,7 @@ export function Navbar({
     .toUpperCase();
 
   return (
-    <header className="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+    <header className="sticky top-0 z-30 bg-white/75 dark:bg-slate-900/60 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 transition-colors">
       <div className="px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
         {/* Left: Mobile Menu Toggle & Brand */}
         <div className="flex items-center gap-3">

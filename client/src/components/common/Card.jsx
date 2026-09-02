@@ -40,11 +40,11 @@ export function Card({
   return (
     <div
       onClick={onClick}
-      className={`bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl shadow-xs overflow-hidden ${hoverStyle} ${className}`}
+      className={`bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200/60 dark:border-slate-800/70 rounded-2xl shadow-lg shadow-black/10 overflow-hidden ${hoverStyle} ${className}`}
       {...rest}
     >
       {hasHeader && (
-        <div className="px-5 py-4 sm:px-6 sm:py-5 border-b border-slate-100 dark:border-slate-800/60 flex items-center justify-between gap-4">
+        <div className="px-5 py-4 sm:px-6 sm:py-5 border-b border-slate-100/60 dark:border-slate-800/60 flex items-center justify-between gap-4">
           <div>
             {title && (
               <h3 className="text-base font-semibold text-slate-900 dark:text-white leading-tight">
@@ -64,7 +64,7 @@ export function Card({
       <div className={paddingStyles[padding] || paddingStyles.md}>{children}</div>
 
       {footer && (
-        <div className="px-5 py-3.5 sm:px-6 bg-slate-50/70 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-800/60">
+        <div className="px-5 py-3.5 sm:px-6 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-100/60 dark:border-slate-800/60">
           {footer}
         </div>
       )}

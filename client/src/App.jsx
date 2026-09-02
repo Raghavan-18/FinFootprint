@@ -10,6 +10,7 @@ import LenderReportPage from './pages/LenderReport';
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import ForgotPassword from './pages/auth/ForgotPassword';
+import FinancialProfilePage from './pages/FinancialProfile';
 import { useAuth } from './context/AuthContext';
 import firestoreService from './services/firestoreService';
 
@@ -25,6 +26,10 @@ const pathToTab = (pathname) => {
       return 'signup';
     case '/forgot-password':
       return 'forgot-password';
+    case '/financial-profile':
+    case '/setup-profile':
+    case '/onboarding':
+      return 'financial-profile';
     case '/add':
     case '/add-activity':
       return 'add-activity';
@@ -54,6 +59,8 @@ const tabToPath = (tab) => {
       return '/signup';
     case 'forgot-password':
       return '/forgot-password';
+    case 'financial-profile':
+      return '/financial-profile';
     case 'add-activity':
       return '/add';
     case 'history':
@@ -113,16 +120,19 @@ export function App() {
     }
   }, []);
 
-  // Protected Route Guard: Compute effective tab based on authentication state
+  // Protected Route Guard: Compute effective tab based on authentication and profile state
   const isAuthRoute = ['login', 'signup', 'forgot-password'].includes(activeTab);
   let effectiveTab = activeTab;
   if (!authLoading) {
     if (!isAuthenticated && !isAuthRoute) {
       // Unauthenticated users accessing protected routes see login
       effectiveTab = 'login';
-    } else if (isAuthenticated && (activeTab === 'login' || activeTab === 'signup')) {
-      // Authenticated users accessing login/signup see dashboard
-      effectiveTab = 'dashboard';
+    } else if (isAuthenticated && isAuthRoute) {
+      // Authenticated users accessing login/signup see dashboard or onboarding if profile incomplete
+      effectiveTab = profile && profile.profileCompleted === false ? 'financial-profile' : 'dashboard';
+    } else if (isAuthenticated && !isLoading && profile && profile.profileCompleted === false && !isAuthRoute) {
+      // New users with incomplete profile are guided to financial profile setup
+      effectiveTab = 'financial-profile';
     }
   }
 
@@ -267,6 +277,24 @@ export function App() {
 
   if (effectiveTab === 'forgot-password') {
     return <ForgotPassword onNavigate={handleNavigate} />;
+  }
+
+  // Financial Profile Setup / Onboarding Flow
+  if (effectiveTab === 'financial-profile') {
+    return (
+      <FinancialProfilePage
+        profile={effectiveProfile}
+        onComplete={(updatedProfileData) => {
+          setProfile((prev) => ({
+            ...(prev || {}),
+            ...(updatedProfileData || {}),
+            profileCompleted: true,
+          }));
+          handleNavigate('dashboard');
+        }}
+        onNavigate={handleNavigate}
+      />
+    );
   }
 
   // Render current view inside existing main application shell

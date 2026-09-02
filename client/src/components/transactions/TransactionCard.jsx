@@ -39,7 +39,7 @@ export function TransactionCard({
   return (
     <div
       onClick={() => onClick && onClick(transaction)}
-      className={`group relative flex items-center justify-between p-4 rounded-xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 hover:border-indigo-200 dark:hover:border-indigo-900/50 hover:shadow-xs transition-all duration-150 ${
+      className={`group relative flex items-center justify-between p-4 rounded-xl border border-slate-200/60 dark:border-slate-800/70 bg-white/75 dark:bg-slate-900/60 backdrop-blur-md hover:border-indigo-200 dark:hover:border-indigo-800/60 hover:shadow-xs transition-all duration-150 ${
         onClick ? 'cursor-pointer' : ''
       } ${className}`}
     >

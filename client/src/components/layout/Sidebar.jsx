@@ -49,7 +49,7 @@ export function Sidebar({
 
   return (
     <aside
-      className={`w-64 bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 flex flex-col justify-between p-4 min-h-[calc(100vh-57px)] ${className}`}
+      className={`w-64 bg-white/75 dark:bg-slate-900/60 backdrop-blur-xl border-r border-slate-200/60 dark:border-slate-800/60 flex flex-col justify-between p-4 min-h-[calc(100vh-57px)] ${className}`}
     >
       <div className="space-y-6">
         {/* Navigation links */}

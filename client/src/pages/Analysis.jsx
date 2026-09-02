@@ -164,7 +164,11 @@ export function Analysis({
                     key={anom.id}
                     anomaly={anom}
                     onViewTransaction={handleViewFlaggedTransaction}
-                    onResolve={(a) => alert(`Resolving verification for: ${a.title}`)}
+                    onResolve={(a) => {
+                      if (a.transactionId) {
+                        handleViewFlaggedTransaction(a.transactionId);
+                      }
+                    }}
                   />
                 ))}
               </div>

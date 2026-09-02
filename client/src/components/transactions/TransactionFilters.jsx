@@ -31,7 +31,7 @@ export function TransactionFilters({
 
   return (
     <div
-      className={`p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-3 ${className}`}
+      className={`p-4 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200/60 dark:border-slate-800/70 space-y-3 shadow-lg shadow-black/5 ${className}`}
     >
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         {/* Search Input */}

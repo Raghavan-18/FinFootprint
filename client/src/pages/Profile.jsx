@@ -5,6 +5,8 @@ import ProfileTimeline from '../components/profile/ProfileTimeline';
 import ProfileInsights from '../components/profile/ProfileInsights';
 import EvidenceSummary from '../components/profile/EvidenceSummary';
 import LoadingState from '../components/common/LoadingState';
+import Button from '../components/common/Button';
+import { Sliders } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 
 /**
@@ -33,6 +35,18 @@ export function Profile({
           { label: t('navigation.dashboard'), onClick: () => onNavigate('dashboard') },
           { label: t('navigation.profile') },
         ]}
+        action={
+          onNavigate && (
+            <Button
+              variant="outline"
+              size="sm"
+              icon={<Sliders className="w-4 h-4" />}
+              onClick={() => onNavigate('financial-profile')}
+            >
+              {t('financialProfile.title')}
+            </Button>
+          )
+        }
       />
 
       {/* Main Profile Header with Avatar & KYC details */}

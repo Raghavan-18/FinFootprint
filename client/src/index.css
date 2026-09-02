@@ -7,6 +7,27 @@
 }
 
 /* ==================================================
+   GLOBAL BACKGROUND CONFIGURATION
+   ================================================== */
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-image: url('/background.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
+
+/* ==================================================
    GLOBAL TAMIL TYPOGRAPHY SYSTEM
    ================================================== */
 

@@ -52,11 +52,34 @@ export const getUserProfile = async (authUser) => {
         email: authUser.email || data.email || '',
         fullName: authUser.displayName || data.fullName || (authUser.email ? authUser.email.split('@')[0] : 'User'),
         photoURL: authUser.photoURL || data.avatarUrl || null,
+        profileCompleted: Boolean(data.profileCompleted),
+        monthlyIncome: Number(data.monthlyIncome) || 0,
+        incomeType: data.incomeType || 'SALARY',
+        incomeStability: data.incomeStability || 'FIXED',
+        occupation: data.occupation || '',
+        housing: data.housing || {
+          status: 'OWN',
+          ownershipStatus: 'FULLY_OWNED',
+          propertyValue: 0,
+          monthlyRent: 0,
+          landlordContact: '',
+        },
+        loans: Array.isArray(data.loans) ? data.loans : [],
+        monthlyExpenses: data.monthlyExpenses || {
+          food: 0,
+          rent: 0,
+          utilities: 0,
+          transport: 0,
+          education: 0,
+          medical: 0,
+          loanEmi: 0,
+          other: 0,
+        },
         ...data,
       };
     }
 
-    // Default Profile for Brand New User
+    // Default Profile for Brand New User (profileCompleted: false)
     const defaultProfile = {
       id: authUser.uid,
       uid: authUser.uid,
@@ -78,6 +101,29 @@ export const getUserProfile = async (authUser) => {
       trustGrade: '—',
       verificationCoverage: 0,
       avatarUrl: authUser.photoURL || null,
+      profileCompleted: false,
+      monthlyIncome: 0,
+      incomeType: 'SALARY',
+      incomeStability: 'FIXED',
+      occupation: '',
+      housing: {
+        status: 'OWN',
+        ownershipStatus: 'FULLY_OWNED',
+        propertyValue: 0,
+        monthlyRent: 0,
+        landlordContact: '',
+      },
+      loans: [],
+      monthlyExpenses: {
+        food: 0,
+        rent: 0,
+        utilities: 0,
+        transport: 0,
+        education: 0,
+        medical: 0,
+        loanEmi: 0,
+        other: 0,
+      },
       createdAt: new Date().toISOString(),
     };
 
@@ -97,6 +143,7 @@ export const getUserProfile = async (authUser) => {
       memberSince: new Date().toISOString().split('T')[0],
       footprintScore: 0,
       trustGrade: '—',
+      profileCompleted: false,
     };
   }
 };
@@ -112,6 +159,66 @@ export const updateUserProfile = async (userId, updates) => {
   if (!userId) throw new Error('User ID is required to update profile');
   const userDocRef = doc(db, 'users', userId);
   await setDoc(userDocRef, { ...updates, updatedAt: new Date().toISOString() }, { merge: true });
+};
+
+/**
+ * Save complete Financial Profile during onboarding: users/{uid}
+ *
+ * @param {string} userId - User UID
+ * @param {Object} financialData - Financial profile data payload
+ * @returns {Promise<Object>} Updated profile object
+ */
+export const saveFinancialProfile = async (userId, financialData) => {
+  if (!userId) throw new Error('User ID is required to save financial profile');
+
+  const cleanLoans = Array.isArray(financialData.loans)
+    ? financialData.loans.map((loan, idx) => ({
+        id: loan.id || `loan_${Date.now()}_${idx}`,
+        type: loan.type || 'PERSONAL',
+        lender: loan.lender ? String(loan.lender).trim() : '',
+        outstandingAmount: Number(loan.outstandingAmount) || 0,
+        monthlyEmi: Number(loan.monthlyEmi) || 0,
+        remainingTenureMonths: Number(loan.remainingTenureMonths) || 0,
+      }))
+    : [];
+
+  const housingStatus = financialData.housing?.status || 'OWN';
+  const monthlyRent = housingStatus === 'RENTED' ? (Number(financialData.housing?.monthlyRent) || 0) : 0;
+  const totalLoanEmi = cleanLoans.reduce((sum, l) => sum + (Number(l.monthlyEmi) || 0), 0);
+
+  const cleanExpenses = {
+    food: Number(financialData.monthlyExpenses?.food) || 0,
+    rent: monthlyRent,
+    utilities: Number(financialData.monthlyExpenses?.utilities) || 0,
+    transport: Number(financialData.monthlyExpenses?.transport) || 0,
+    education: Number(financialData.monthlyExpenses?.education) || 0,
+    medical: Number(financialData.monthlyExpenses?.medical) || 0,
+    loanEmi: totalLoanEmi > 0 ? totalLoanEmi : (Number(financialData.monthlyExpenses?.loanEmi) || 0),
+    other: Number(financialData.monthlyExpenses?.other) || 0,
+  };
+
+  const payload = {
+    monthlyIncome: Number(financialData.monthlyIncome) || 0,
+    incomeType: financialData.incomeType || 'SALARY',
+    incomeStability: financialData.incomeStability || 'FIXED',
+    occupation: financialData.occupation ? String(financialData.occupation).trim() : '',
+    housing: {
+      status: housingStatus,
+      ownershipStatus: financialData.housing?.ownershipStatus || (housingStatus === 'OWN' ? 'FULLY_OWNED' : ''),
+      propertyValue: Number(financialData.housing?.propertyValue) || 0,
+      monthlyRent: monthlyRent,
+      landlordContact: financialData.housing?.landlordContact ? String(financialData.housing.landlordContact).trim() : '',
+    },
+    loans: cleanLoans,
+    monthlyExpenses: cleanExpenses,
+    profileCompleted: true,
+    updatedAt: new Date().toISOString(),
+  };
+
+  const userDocRef = doc(db, 'users', userId);
+  await setDoc(userDocRef, payload, { merge: true });
+
+  return payload;
 };
 
 /**
@@ -529,6 +636,7 @@ export const getLenderReportData = (activities = [], stats = null, profile = nul
 export default {
   getUserProfile,
   updateUserProfile,
+  saveFinancialProfile,
   getFinancialActivities,
   createFinancialActivity,
   calculateStatsFromActivities,
@@ -536,3 +644,4 @@ export default {
   getAnalysisData,
   getLenderReportData,
 };
+

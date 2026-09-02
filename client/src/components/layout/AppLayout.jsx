@@ -23,7 +23,7 @@ export function AppLayout({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors">
+    <div className="min-h-screen bg-slate-950/20 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors">
       {/* Top Navbar */}
       <Navbar
         profile={profile}

@@ -19,7 +19,7 @@ export function AuthLayout({
   const { language, setLanguage, t } = useLanguage();
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col justify-between font-sans selection:bg-indigo-500 selection:text-white relative overflow-x-hidden transition-colors">
+    <div className="min-h-screen bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-sm text-slate-900 dark:text-slate-100 flex flex-col justify-between font-sans selection:bg-indigo-500 selection:text-white relative overflow-x-hidden transition-colors">
       {/* Background ambient lighting accents */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-indigo-500/10 dark:bg-indigo-600/15 blur-[120px] rounded-full" />

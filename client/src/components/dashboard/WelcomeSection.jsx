@@ -22,7 +22,7 @@ export function WelcomeSection({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-950 text-white p-6 sm:p-8 border border-indigo-800/40 shadow-xl ${className}`}
+      className={`relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-950/70 via-indigo-900/55 to-slate-950/70 backdrop-blur-xl text-white p-6 sm:p-8 border border-indigo-500/30 shadow-2xl ${className}`}
     >
       {/* Background glow accents */}
       <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
