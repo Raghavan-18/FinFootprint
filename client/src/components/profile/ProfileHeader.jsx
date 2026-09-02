@@ -1,18 +1,13 @@
 import Card from '../common/Card';
 import Badge from '../common/Badge';
-import {
-  Building2,
-  Phone,
-  Mail,
-  MapPin,
-  ShieldCheck,
-  CheckCircle2,
-} from 'lucide-react';
+import { Building2, Phone, Mail, MapPin, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { formatDate } from '../../utils/formatDate';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable ProfileHeader component with localization
+ * Reusable ProfileHeader component with localization — FinFootprint v2 Design System
+ *
+ * Uses warm slate surfaces, indigo brand accents, semantic badge colors.
  *
  * @param {Object} props
  * @param {Object} props.profile
@@ -31,7 +26,7 @@ export function ProfileHeader({ profile, className = '' }) {
     .toUpperCase();
 
   return (
-    <Card className={className}>
+    <Card variant="default" padding="lg" className={className}>
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         {/* Left: Avatar & Identity */}
         <div className="flex items-center gap-4">
@@ -47,30 +42,30 @@ export function ProfileHeader({ profile, className = '' }) {
                 initials
               )}
             </div>
-            <div className="absolute -bottom-1 -right-1 p-1 bg-white dark:bg-slate-900 rounded-full">
-              <CheckCircle2 className="w-5 h-5 text-emerald-500 fill-emerald-50" />
+            <div className="absolute -bottom-1 -right-1 p-1 bg-white dark:bg-neutral-900 rounded-full border border-neutral-200 dark:border-neutral-800">
+              <CheckCircle2 className="w-5 h-5 text-verified fill-verified" />
             </div>
           </div>
 
           <div>
             <div className="flex items-center gap-2.5 flex-wrap">
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-xl sm:text-2xl font-bold text-neutral-950 dark:text-neutral-50">
                 {profile.fullName || 'User'}
               </h2>
-              <Badge variant={profile.kycStatus === 'VERIFIED' ? 'emerald' : 'default'} size="sm" icon={<ShieldCheck className="w-3.5 h-3.5" />}>
-                {profile.kycStatus === 'VERIFIED' ? t('profile.kycVerified') : 'KYC Pending'}
+              <Badge variant={profile.kycStatus === 'VERIFIED' ? 'success' : 'default'} size="sm" icon={<ShieldCheck className="w-3.5 h-3.5" />}>
+                {profile.kycStatus === 'VERIFIED' ? t('profile.kycVerified') : t('profile.kycPending')}
               </Badge>
-              <Badge variant="indigo" size="sm">
+              <Badge variant="primary" size="sm">
                 {t('profile.aaActive')}
               </Badge>
             </div>
 
-            <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mt-1 flex items-center gap-1.5">
-              <Building2 className="w-4 h-4 text-slate-400" />
-              {profile.businessName || 'Micro-Enterprise'}
+            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mt-1 flex items-center gap-1.5">
+              <Building2 className="w-4 h-4 text-neutral-400" />
+              {profile.businessName || t('profile.microEnterprise')}
             </p>
 
-            <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mt-2 flex-wrap">
+            <div className="flex items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 mt-2 flex-wrap">
               <span className="flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5" /> {profile.city || 'India'}
               </span>
@@ -95,22 +90,22 @@ export function ProfileHeader({ profile, className = '' }) {
         </div>
 
         {/* Right: Registration badges */}
-        <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 text-xs space-y-1.5 w-full md:w-auto">
+        <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 text-xs space-y-1.5 w-full md:w-auto shrink-0">
           <div className="flex justify-between md:justify-start gap-4">
-            <span className="text-slate-500 font-medium">{t('profile.gstId')}</span>
-            <span className="font-mono font-semibold text-slate-800 dark:text-slate-200">
+            <span className="text-neutral-500 font-medium">{t('profile.gstId')}</span>
+            <span className="font-mono font-semibold text-neutral-950 dark:text-neutral-50">
               {profile.registrationNumber}
             </span>
           </div>
           <div className="flex justify-between md:justify-start gap-4">
-            <span className="text-slate-500 font-medium">{t('profile.panNumber')}</span>
-            <span className="font-mono font-semibold text-slate-800 dark:text-slate-200">
+            <span className="text-neutral-500 font-medium">{t('profile.panNumber')}</span>
+            <span className="font-mono font-semibold text-neutral-950 dark:text-neutral-50">
               {profile.panNumber}
             </span>
           </div>
           <div className="flex justify-between md:justify-start gap-4">
-            <span className="text-slate-500 font-medium">{t('profile.established')}</span>
-            <span className="font-semibold text-slate-800 dark:text-slate-200">
+            <span className="text-neutral-500 font-medium">{t('profile.established')}</span>
+            <span className="font-semibold text-neutral-950 dark:text-neutral-50">
               {formatDate(profile.memberSince)}
             </span>
           </div>

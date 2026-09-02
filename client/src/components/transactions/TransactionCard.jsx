@@ -9,7 +9,10 @@ import { formatDate } from '../../utils/formatDate';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable TransactionCard Component with localization
+ * Reusable TransactionCard Component with localization — FinFootprint v2 Design System
+ *
+ * Uses warm slate surfaces, semantic colors for income/expense,
+ * and evidence badges integrated with design system.
  *
  * @param {Object} props
  * @param {Object} props.transaction
@@ -39,7 +42,7 @@ export function TransactionCard({
   return (
     <div
       onClick={() => onClick && onClick(transaction)}
-      className={`group relative flex items-center justify-between p-4 rounded-xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 hover:border-indigo-200 dark:hover:border-indigo-900/50 hover:shadow-xs transition-all duration-150 ${
+      className={`group relative flex items-center justify-between p-4 rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 bg-surface-raised hover:border-indigo-500/30 dark:hover:border-indigo-900/50 hover:shadow-xs transition-all duration-150 ${
         onClick ? 'cursor-pointer' : ''
       } ${className}`}
     >
@@ -49,8 +52,8 @@ export function TransactionCard({
         <div
           className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
             isIncome
-              ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400'
-              : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+              ? 'bg-verified-bg text-verified dark:bg-verified-bg-dark dark:text-verified'
+              : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
           }`}
         >
           {isIncome ? (
@@ -63,7 +66,7 @@ export function TransactionCard({
         {/* Text Details */}
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            <h4 className="text-sm font-semibold text-neutral-950 dark:text-neutral-50 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
               {transaction.title}
             </h4>
             {!compact && (
@@ -75,7 +78,7 @@ export function TransactionCard({
             )}
           </div>
 
-          <div className="flex items-center gap-2.5 text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">
+          <div className="flex items-center gap-2.5 text-xs text-neutral-500 dark:text-neutral-400 mt-1 truncate">
             {paymentMethodLabel && (
               <>
                 <span className="font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-1.5 py-0.5 rounded-sm text-[10px]">
@@ -92,7 +95,7 @@ export function TransactionCard({
             {transaction.category && (
               <>
                 <span className="hidden sm:inline">•</span>
-                <span className="hidden sm:inline text-slate-600 dark:text-slate-300 font-medium">
+                <span className="hidden sm:inline text-neutral-600 dark:text-neutral-300 font-medium">
                   {categoryLabel}
                 </span>
               </>
@@ -109,8 +112,8 @@ export function TransactionCard({
           <p
             className={`text-sm sm:text-base font-bold tracking-tight ${
               isIncome
-                ? 'text-emerald-600 dark:text-emerald-400'
-                : 'text-slate-900 dark:text-slate-100'
+                ? 'text-verified dark:text-verified'
+                : 'text-neutral-950 dark:text-neutral-50'
             }`}
           >
             {isIncome ? '+' : '-'}
@@ -122,7 +125,7 @@ export function TransactionCard({
         </div>
 
         {showChevron && (
-          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all hidden sm:block shrink-0" />
+          <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:tranneutral-x-0.5 transition-all hidden sm:block shrink-0" />
         )}
       </div>
     </div>

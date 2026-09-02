@@ -2,7 +2,9 @@ import { Loader2 } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable Loading State Component with localization
+ * Reusable Loading State Component with localization — FinFootprint v2 Design System
+ *
+ * Uses neutral warm slate surfaces, indigo brand accent.
  *
  * @param {Object} props
  * @param {'spinner'|'skeleton'|'cards'} [props.type='spinner']
@@ -24,7 +26,7 @@ export function LoadingState({
         {Array.from({ length: count }).map((_, idx) => (
           <div
             key={idx}
-            className="h-16 bg-slate-100 dark:bg-slate-800/60 rounded-xl w-full"
+            className="h-16 bg-neutral-100 dark:bg-neutral-800/60 rounded-xl w-full"
           />
         ))}
       </div>
@@ -39,7 +41,7 @@ export function LoadingState({
         {Array.from({ length: count }).map((_, idx) => (
           <div
             key={idx}
-            className="h-36 bg-slate-100 dark:bg-slate-800/60 rounded-2xl p-5"
+            className="h-36 bg-neutral-100 dark:bg-neutral-800/60 rounded-2xl p-5"
           />
         ))}
       </div>
@@ -48,7 +50,7 @@ export function LoadingState({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center p-12 text-slate-500 dark:text-slate-400 ${className}`}
+      className={`flex flex-col items-center justify-center p-12 text-neutral-500 dark:text-neutral-400 ${className}`}
     >
       <Loader2 className="w-8 h-8 text-indigo-600 dark:text-indigo-400 animate-spin mb-3" />
       <p className="text-sm font-medium">{message || t('common.loadingData')}</p>

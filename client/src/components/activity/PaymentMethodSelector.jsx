@@ -43,7 +43,7 @@ export function PaymentMethodSelector({ value = 'CASH', onChange, className = ''
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300">
         {t('activity.paymentMethodLabel')}
       </label>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -56,13 +56,13 @@ export function PaymentMethodSelector({ value = 'CASH', onChange, className = ''
               key={opt.id}
               type="button"
               onClick={() => onChange(opt.id)}
-              className={`flex items-center justify-center gap-2 p-3 rounded-xl border font-semibold text-xs sm:text-sm transition-all cursor-pointer select-none ${
+              className={`flex items-center justify-center gap-2 p-3 rounded-xl border font-semibold text-xs sm:text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-surface focus:ring-indigo-500 cursor-pointer select-none ${
                 isSelected
-                  ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 ring-2 ring-indigo-500/20 shadow-xs'
-                  : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+                  ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300'
+                  : 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800/60 hover:text-neutral-900 dark:hover:text-white'
               }`}
             >
-              <Icon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
+              <Icon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-neutral-400 dark:text-neutral-500'}`} />
               <span className="truncate">{opt.label}</span>
             </button>
           );
@@ -70,7 +70,7 @@ export function PaymentMethodSelector({ value = 'CASH', onChange, className = ''
       </div>
 
       {currentOption?.help && (
-        <p className="text-[11px] text-slate-400 dark:text-slate-500 leading-normal pl-0.5">
+        <p className="text-[11px] text-neutral-500 leading-normal mb-1">
           {currentOption.help}
         </p>
       )}

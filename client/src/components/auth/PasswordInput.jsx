@@ -51,7 +51,7 @@ export function PasswordInput({
       {label && (
         <label
           htmlFor={inputId}
-          className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between"
+          className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300 flex items-center justify-between"
         >
           <span>
             {label}
@@ -62,7 +62,7 @@ export function PasswordInput({
 
       <div className="relative rounded-xl shadow-xs">
         {/* Leading Lock Icon */}
-        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
           <Lock className="w-4 h-4" />
         </div>
 
@@ -79,10 +79,10 @@ export function PasswordInput({
           disabled={disabled}
           aria-invalid={hasError}
           aria-describedby={hasError ? errorId : hintId}
-          className={`w-full rounded-xl text-sm transition-all duration-150 bg-white dark:bg-slate-900/90 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 border pl-10 pr-11 py-2.5 sm:py-3 focus:outline-none focus:ring-2 focus:ring-offset-1 dark:focus:ring-offset-slate-950 disabled:opacity-50 disabled:cursor-not-allowed ${
+          className={`w-full rounded-xl text-sm transition-all duration-150 bg-white dark:bg-neutral-900/90 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500 border pl-10 pr-11 py-2.5 sm:py-3 focus:outline-none focus:ring-2 focus:ring-offset-1 dark:focus:ring-offset-neutral-950 disabled:opacity-50 disabled:cursor-not-allowed ${
             hasError
               ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/30'
-              : 'border-slate-300 dark:border-slate-700/80 hover:border-slate-400 dark:hover:border-slate-600 focus:border-indigo-500 focus:ring-indigo-500/20'
+              : 'border-neutral-300 dark:border-neutral-700/80 hover:border-neutral-400 dark:hover:border-neutral-600 focus:border-indigo-500 focus:ring-indigo-500/20'
           }`}
           {...rest}
         />
@@ -94,7 +94,7 @@ export function PasswordInput({
           disabled={disabled}
           tabIndex={0}
           aria-label={showPassword ? t('auth.common.hidePassword') : t('auth.common.showPassword')}
-          className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors focus:outline-none cursor-pointer"
+          className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 transition-colors focus:outline-none cursor-pointer"
         >
           {showPassword ? (
             <EyeOff className="w-4 h-4" aria-hidden="true" />
@@ -117,7 +117,7 @@ export function PasswordInput({
 
       {/* Helper Requirement Hint */}
       {!hasError && hint && (
-        <p id={hintId} className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+        <p id={hintId} className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
           {hint}
         </p>
       )}

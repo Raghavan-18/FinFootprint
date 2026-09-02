@@ -1,6 +1,7 @@
-
 /**
- * Reusable MetricProgress Component with benchmark tick indicator
+ * Reusable MetricProgress Component with benchmark tick indicator — FinFootprint v2 Design System
+ *
+ * Uses design system semantic colors based on status.
  *
  * @param {Object} props
  * @param {number} props.value - Score/Progress (0 - 100)
@@ -22,15 +23,15 @@ export function MetricProgress({
     switch (String(st).toUpperCase()) {
       case 'OPTIMAL':
       case 'HIGH':
-        return 'bg-emerald-500';
+        return 'bg-verified';
       case 'MEDIUM':
       case 'MODERATE':
-        return 'bg-blue-500';
+        return 'bg-corroborated';
       case 'LOW':
       case 'CAUTION':
-        return 'bg-amber-500';
+        return 'bg-turmeric-500';
       case 'CRITICAL':
-        return 'bg-rose-500';
+        return 'bg-mismatch';
       default:
         return 'bg-indigo-600';
     }
@@ -38,19 +39,17 @@ export function MetricProgress({
 
   return (
     <div className={`space-y-1.5 ${className}`}>
-      <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden relative">
+      <div className="w-full h-2.5 bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden relative">
         <div
-          className={`h-full rounded-full transition-all duration-700 ease-out ${getStatusColor(
-            status
-          )}`}
+          className={`h-full rounded-full transition-all duration-700 ease-out ${getStatusColor(status)}`}
           style={{ width: `${percentage}%` }}
         />
       </div>
 
       {benchmark && (
-        <div className="flex justify-between items-center text-[11px] text-slate-500 dark:text-slate-400">
+        <div className="flex justify-between items-center text-[11px] text-neutral-500 dark:text-neutral-400">
           <span>{benchmark}</span>
-          <span className="font-semibold text-slate-700 dark:text-slate-300">
+          <span className="font-semibold text-neutral-700 dark:text-neutral-300">
             {value} / {max}
           </span>
         </div>

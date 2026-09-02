@@ -35,16 +35,16 @@ export function EvidenceAssessmentResult({
   return (
     <Card className={`max-w-xl mx-auto space-y-6 ${className}`}>
       {/* Top Banner */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+      <div className="flex items-center justify-between pb-4 border-b border-neutral-100 dark:border-neutral-800">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-verified/10 dark:bg-verified/10 text-verified dark:text-verified flex items-center justify-center">
             <CheckCircle2 className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-white">
+            <h3 className="text-base font-bold text-neutral-950 dark:text-neutral-50">
               {t('activity.assessmentCompleteTitle')}
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-neutral-500">
               {t('activity.assessmentCompleteSubtitle')}
             </p>
           </div>
@@ -53,19 +53,19 @@ export function EvidenceAssessmentResult({
       </div>
 
       {/* Recorded Transaction Summary Pill */}
-      <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 space-y-2">
+      <div className="p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
+          <span className="text-xs text-neutral-500 uppercase tracking-wider font-semibold">
             {transaction.title}
           </span>
-          <span className="text-base font-extrabold text-slate-900 dark:text-white">
+          <span className="text-base font-extrabold text-neutral-950 dark:text-neutral-50">
             {transaction.type === 'INCOME' ? '+' : '-'}
             {formatCurrency(transaction.amount)}
           </span>
         </div>
 
-        <div className="flex items-center gap-3 text-xs text-slate-500">
-          <span>{t('transactions.paymentChannel')}: <strong className="text-slate-700 dark:text-slate-300">{transaction.paymentMethod}</strong></span>
+        <div className="flex items-center gap-3 text-xs text-neutral-500">
+          <span>{t('transactions.paymentChannel')}: <strong className="text-neutral-700 dark:text-neutral-300">{transaction.paymentMethod}</strong></span>
           {transaction.reference && (
             <>
               <span>•</span>
@@ -76,15 +76,15 @@ export function EvidenceAssessmentResult({
       </div>
 
       {/* System Evidence Assessment Explanation Box */}
-      <div className="p-4 rounded-xl border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50/40 dark:bg-indigo-950/30 space-y-2">
+      <div className="p-4 rounded-xl border border-indigo-200 dark:border-indigo-800/40 bg-indigo-50/30 dark:bg-indigo-950/20 space-y-2">
         <div className="flex items-center gap-2 text-xs font-bold text-indigo-950 dark:text-indigo-200">
           <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
           <span>{t('activity.systemEvidenceExplanationTitle')}</span>
         </div>
-        <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+        <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed">
           {explanation}
         </p>
-        <p className="text-[11px] text-slate-400 dark:text-slate-500 italic pt-1 border-t border-indigo-100/60 dark:border-indigo-900/40">
+        <p className="text-[11px] text-neutral-500 italic pt-1 border-t border-indigo-200/60 dark:border-indigo-800/40">
           {t('evidence.disclaimerNotice')}
         </p>
       </div>
@@ -96,7 +96,7 @@ export function EvidenceAssessmentResult({
           size="md"
           icon={<PlusCircle className="w-4 h-4" />}
           onClick={onLogAnother}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto text-sm"
         >
           {t('activity.logAnotherBtn')}
         </Button>
@@ -106,7 +106,7 @@ export function EvidenceAssessmentResult({
           size="md"
           rightIcon={<ArrowRight className="w-4 h-4" />}
           onClick={onViewLedger}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto text-sm"
         >
           {t('activity.viewInLedgerBtn')}
         </Button>

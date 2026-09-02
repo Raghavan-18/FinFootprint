@@ -41,7 +41,7 @@ export function ProofUpload({
 
   return (
     <div className={`space-y-1.5 ${className}`}>
-      <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300">
         {t('activity.attachProofTitle')}
       </label>
 
@@ -55,16 +55,16 @@ export function ProofUpload({
 
       {fileName ? (
         /* File Attached State */
-        <div className="p-4 rounded-xl border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50/40 dark:bg-emerald-950/20 flex items-center justify-between gap-3 animate-in fade-in duration-150">
+        <div className="p-4 rounded-xl border border-verified-border dark:border-verified-border-dark bg-verified-bg dark:bg-verified-bg-dark flex items-center justify-between gap-3 animate-in fade-in duration-150">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-verified/20 dark:bg-verified/20 text-verified dark:text-verified flex items-center justify-center shrink-0">
               <FileCheck className="w-5 h-5" />
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-bold text-emerald-900 dark:text-emerald-200 truncate">
+              <p className="text-xs font-bold text-neutral-950 dark:text-neutral-50 truncate">
                 {fileName}
               </p>
-              <p className="text-[11px] text-emerald-700 dark:text-emerald-400">
+              <p className="text-[11px] text-verified dark:text-verified">
                 {t('activity.proofAttachedSuccess')}
               </p>
             </div>
@@ -73,7 +73,7 @@ export function ProofUpload({
           <button
             type="button"
             onClick={handleRemove}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer shrink-0"
+            className="p-1.5 rounded-lg text-neutral-400 hover:text-mismatch hover:bg-mismatch-bg dark:hover:bg-mismatch-bg-dark transition-colors cursor-pointer shrink-0 focus:outline-none focus:ring-2 focus:ring-mismatch-border"
             title="Remove file"
           >
             <X className="w-4 h-4" />
@@ -93,21 +93,21 @@ export function ProofUpload({
             const file = e.dataTransfer?.files?.[0];
             if (file) onFileChange(file.name);
           }}
-          className={`p-4 rounded-xl border border-dashed transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
+          className={`p-4 rounded-xl border border-dashed transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 focus-within:ring-2 focus-within:ring-indigo-500/20 focus-within:border-indigo-500 ${
             dragActive
               ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/40'
-              : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 hover:border-slate-300 dark:hover:border-slate-700'
+              : 'border-neutral-300 dark:border-neutral-700 bg-neutral-50/50 dark:bg-neutral-900/30 hover:border-neutral-400 dark:hover:border-neutral-600'
           }`}
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
               <UploadCloud className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+              <p className="text-xs font-semibold text-neutral-900 dark:text-neutral-100">
                 {t('activity.attachProofTitle')}
               </p>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+              <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-0.5 leading-relaxed">
                 {t('activity.attachProofSubtitle')}
               </p>
             </div>

@@ -9,7 +9,9 @@ import { Printer } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable LenderReport component with localization
+ * Reusable LenderReport component with localization — FinFootprint v2 Design System
+ *
+ * Uses warm slate surfaces, indigo brand accents, semantic tier colors.
  *
  * @param {Object} props
  * @param {Object} props.report - Lender report data object
@@ -36,21 +38,21 @@ export function LenderReport({
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Top Formal Letterhead */}
-      <Card className="border-indigo-200 dark:border-indigo-900/50 bg-gradient-to-br from-white via-slate-50 to-indigo-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950/20">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-5 border-b border-slate-200/80 dark:border-slate-800">
+      <Card variant="default" padding="lg" className="border-primary-border dark:border-primary-border-dark bg-gradient-to-br from-white via-neutral-50 to-primary-bg dark:from-neutral-900 dark:via-neutral-900 dark:to-primary-bg-dark">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-5 border-b border-neutral-200 dark:border-neutral-800">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+              <span className="text-xs font-bold text-primary dark:text-primary uppercase tracking-widest">
                 {t('lenderReport.letterheadTitle')}
               </span>
-              <Badge variant="indigo" size="sm">
+              <Badge variant="primary" size="sm">
                 {t('common.confidential')}
               </Badge>
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+            <h2 className="text-xl sm:text-2xl font-bold text-neutral-950 dark:text-neutral-50">
               {t('lenderReport.letterheadHeading')}
             </h2>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-neutral-500 mt-1">
               {t('lenderReport.appId')} <span className="font-mono font-semibold">{report.applicationId}</span> • {t('lenderReport.generated')} {formatDate(report.generatedDate)}
             </p>
           </div>
@@ -69,50 +71,50 @@ export function LenderReport({
 
         {/* Applicant Details & Underwriting Decision Matrix */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-5">
-          <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700">
-            <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
+          <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700">
+            <span className="text-[11px] font-medium text-neutral-400 uppercase tracking-wider block">
               {t('lenderReport.tradeName')}
             </span>
-            <p className="text-sm font-bold text-slate-900 dark:text-white mt-1 truncate">
+            <p className="text-sm font-bold text-neutral-950 dark:text-neutral-50 mt-1 truncate">
               {report.tradeName || profile?.businessName}
             </p>
-            <p className="text-xs text-slate-500 mt-0.5">{profile?.registrationNumber}</p>
+            <p className="text-xs text-neutral-500 mt-0.5">{profile?.registrationNumber}</p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50">
-            <span className="text-[11px] font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider block">
+          <div className="p-3.5 rounded-xl bg-verified-bg dark:bg-verified-bg-dark border border-verified-border dark:border-verified-border-dark">
+            <span className="text-[11px] font-bold text-verified dark:text-verified uppercase tracking-wider block">
               {t('lenderReport.recommendedLimit')}
             </span>
-            <p className="text-2xl font-black text-emerald-700 dark:text-emerald-300 mt-1">
+            <p className="text-2xl font-bold text-verified dark:text-verified mt-1">
               {formatCurrency(report.recommendedCreditLimit)}
             </p>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5">
+            <p className="text-xs text-verified dark:text-verified mt-0.5">
               {t('lenderReport.tenure')} {report.recommendedTenureMonths} {t('lenderReport.months')}
             </p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700">
-            <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
+          <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700">
+            <span className="text-[11px] font-medium text-neutral-400 uppercase tracking-wider block">
               {t('lenderReport.riskGrade')}
             </span>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-lg font-bold text-slate-900 dark:text-white">
+              <span className="text-lg font-bold text-neutral-950 dark:text-neutral-50">
                 {riskGradeDisplay}
               </span>
             </div>
-            <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-0.5">
+            <p className="text-xs text-primary dark:text-primary mt-0.5">
               {scoreBandDisplay}
             </p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700">
-            <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
+          <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700">
+            <span className="text-[11px] font-medium text-neutral-400 uppercase tracking-wider block">
               {t('lenderReport.interestTier')}
             </span>
-            <p className="text-lg font-bold text-slate-900 dark:text-white mt-1">
+            <p className="text-lg font-bold text-neutral-950 dark:text-neutral-50 mt-1">
               {report.estimatedInterestTier}
             </p>
-            <p className="text-xs text-slate-500 mt-0.5">{t('lenderReport.primeBracket')}</p>
+            <p className="text-xs text-neutral-500 mt-0.5">{t('lenderReport.primeBracket')}</p>
           </div>
         </div>
       </Card>

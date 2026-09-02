@@ -49,7 +49,7 @@ export function Sidebar({
 
   return (
     <aside
-      className={`w-64 bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 flex flex-col justify-between p-4 min-h-[calc(100vh-57px)] ${className}`}
+      className={`w-64 bg-white dark:bg-neutral-900 border-r border-neutral-200/80 dark:border-neutral-800 flex flex-col justify-between p-4 min-h-[calc(100vh-57px)] ${className}`}
     >
       <div className="space-y-6">
         {/* Navigation links */}
@@ -66,11 +66,11 @@ export function Sidebar({
                 className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer ${
                   isActive
                     ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/20'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
+                    : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800/60'
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-neutral-400'}`} />
                   <span className="truncate">{item.label}</span>
                 </div>
                 {item.badge && (
@@ -103,14 +103,14 @@ export function Sidebar({
 
 
       {/* Bottom Trust Card */}
-      <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-50 to-slate-100 dark:from-slate-800/80 dark:to-slate-900 border border-indigo-100 dark:border-slate-700/60">
+      <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-50 to-neutral-100 dark:from-neutral-800/80 dark:to-neutral-900 border border-indigo-100 dark:border-neutral-700/60">
         <div className="flex items-center gap-2 mb-1.5">
           <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-          <span className="text-xs font-bold text-slate-900 dark:text-white">
+          <span className="text-xs font-bold text-neutral-900 dark:text-white">
             {t('sidebar.trustRating')} {profile?.trustGrade && profile?.trustGrade !== '—' ? profile.trustGrade : '—'}
           </span>
         </div>
-        <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+        <p className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug">
           {t('sidebar.alternativeScore')} <strong>{profile?.footprintScore ? profile.footprintScore : '—'}</strong>
         </p>
       </div>

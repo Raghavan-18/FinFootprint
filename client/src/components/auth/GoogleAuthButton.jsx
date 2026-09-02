@@ -23,7 +23,7 @@ export function GoogleAuthButton({
       type="button"
       onClick={onClick}
       disabled={disabled || loading}
-      className={`w-full flex items-center justify-center gap-3 px-4 py-3 sm:py-3.5 rounded-xl font-semibold text-sm sm:text-base bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700/80 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600 shadow-xs focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600 focus:ring-offset-2 dark:focus:ring-offset-slate-950 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 cursor-pointer select-none active:scale-[0.99] ${className}`}
+      className={`w-full flex items-center justify-center gap-3 px-4 py-3 sm:py-3.5 rounded-xl font-semibold text-sm sm:text-base bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700/80 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 shadow-xs focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600 focus:ring-offset-2 dark:focus:ring-offset-neutral-950 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 cursor-pointer select-none active:scale-[0.99] ${className}`}
     >
       {loading ? (
         <Loader2 className="w-5 h-5 animate-spin text-indigo-600 dark:text-indigo-400 shrink-0" />

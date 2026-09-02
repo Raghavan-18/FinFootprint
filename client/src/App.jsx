@@ -244,11 +244,11 @@ export function App() {
   // While Firebase authentication state is initializing, display minimal polished loader
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex flex-col items-center justify-center p-4">
         <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-500/25 animate-pulse mb-4">
           F
         </div>
-        <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold">
+        <div className="flex items-center gap-2 text-neutral-500 text-xs font-semibold">
           <Loader2 className="w-4 h-4 animate-spin text-indigo-600 dark:text-indigo-400" />
           <span>FinFootprint</span>
         </div>

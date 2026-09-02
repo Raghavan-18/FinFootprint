@@ -1,8 +1,11 @@
 import Card from '../common/Card';
+import Badge from '../common/Badge';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable Lender-specific EvidenceSummary component with localization
+ * Reusable Lender-specific EvidenceSummary component with localization — FinFootprint v2 Design System
+ *
+ * Uses warm slate surfaces, semantic tier colors.
  *
  * @param {Object} props
  * @param {Object} props.rating - Evidence integrity rating object
@@ -13,55 +16,51 @@ export function EvidenceSummary({ rating, className = '' }) {
   if (!rating) return null;
 
   return (
-    <Card
-      title={t('lenderReport.evidenceIntegrityTitle')}
-      subtitle={t('lenderReport.evidenceIntegritySubtitle')}
-      className={className}
-    >
+    <Card variant="default" padding="lg" className={className}>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-        <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/40 text-center">
-          <span className="text-[11px] text-emerald-800 dark:text-emerald-300 font-semibold block">
+        <div className="p-3.5 rounded-xl bg-verified-bg dark:bg-verified-bg-dark border border-verified-border dark:border-verified-border-dark text-center">
+          <span className="text-[11px] text-verified dark:text-verified font-semibold block">
             {t('lenderReport.directBankApi')}
           </span>
-          <span className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">
+          <span className="text-xl font-extrabold text-verified dark:text-verified">
             {rating.verifiedShare}
           </span>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/40 text-center">
-          <span className="text-[11px] text-blue-800 dark:text-blue-300 font-semibold block">
+        <div className="p-3.5 rounded-xl bg-info-bg dark:bg-info-bg-dark border border-info-border dark:border-info-border-dark text-center">
+          <span className="text-[11px] text-info dark:text-info font-semibold block">
             {t('lenderReport.corroboratedGst')}
           </span>
-          <span className="text-xl font-extrabold text-blue-600 dark:text-blue-400">
+          <span className="text-xl font-extrabold text-info dark:text-info">
             {rating.corroboratedShare}
           </span>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 text-center">
-          <span className="text-[11px] text-amber-800 dark:text-amber-300 font-semibold block">
+        <div className="p-3.5 rounded-xl bg-warning-bg dark:bg-warning-bg-dark border border-warning-border dark:border-warning-border-dark text-center">
+          <span className="text-[11px] text-warning dark:text-warning font-semibold block">
             {t('lenderReport.selfDeclaredShare')}
           </span>
-          <span className="text-xl font-extrabold text-amber-600 dark:text-amber-400">
+          <span className="text-xl font-extrabold text-warning dark:text-warning">
             {rating.selfDeclaredShare}
           </span>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/40 text-center">
-          <span className="text-[11px] text-rose-800 dark:text-rose-300 font-semibold block">
+        <div className="p-3.5 rounded-xl bg-danger-bg dark:bg-danger-bg-dark border border-danger-border dark:border-danger-border-dark text-center">
+          <span className="text-[11px] text-danger dark:text-danger font-semibold block">
             {t('lenderReport.discrepancyShare')}
           </span>
-          <span className="text-xl font-extrabold text-rose-600 dark:text-rose-400">
+          <span className="text-xl font-extrabold text-danger dark:text-danger">
             {rating.mismatchShare}
           </span>
         </div>
       </div>
 
-      <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
-        <span className="text-slate-600 dark:text-slate-400">
-          {t('lenderReport.integrityGrade')} <strong className="text-slate-900 dark:text-white">{t('lenderReport.gradePrefix')} {rating.grade}</strong>
+      <div className="p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs">
+        <span className="text-neutral-600 dark:text-neutral-400">
+          {t('lenderReport.integrityGrade')} <strong className="text-neutral-950 dark:text-neutral-50">{t('lenderReport.gradePrefix')} {rating.grade}</strong>
         </span>
-        <span className="text-slate-600 dark:text-slate-400">
-          {t('lenderReport.confidenceRating')} <strong className="text-indigo-600 dark:text-indigo-400">{rating.confidenceIndex}</strong>
+        <span className="text-neutral-600 dark:text-neutral-400">
+          {t('lenderReport.confidenceRating')} <strong className="text-primary dark:text-primary">{rating.confidenceIndex}</strong>
         </span>
       </div>
     </Card>

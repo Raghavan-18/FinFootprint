@@ -1,9 +1,12 @@
 import Card from '../common/Card';
+import Badge from '../common/Badge';
 import { CheckCircle2, Lightbulb } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable ProfileInsights component with localization
+ * Reusable ProfileInsights component with localization — FinFootprint v2 Design System
+ *
+ * Uses neutral warm surfaces with semantic colored badges and icons.
  *
  * @param {Object} props
  * @param {string} [props.className='']
@@ -12,30 +15,38 @@ export function ProfileInsights({ className = '' }) {
   const { t } = useLanguage();
 
   return (
-    <Card
-      title={t('profile.readinessTitle')}
-      subtitle={t('profile.readinessSubtitle')}
-      className={className}
-    >
+    <Card variant="default" padding="lg" className={className}>
       <div className="space-y-4">
-        <div className="p-4 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40">
-          <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 dark:text-emerald-300 mb-1">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>{t('profile.dscrCushionTitle')}</span>
+        <div className="p-4 rounded-xl bg-verified-bg dark:bg-verified-bg-dark border border-verified-border dark:border-verified-border-dark flex items-start gap-3">
+          <div className="p-2 rounded-lg bg-verified/10 dark:bg-verified/10 text-verified dark:text-verified shrink-0 mt-0.5">
+            <CheckCircle2 className="w-4 h-4" />
           </div>
-          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-            {t('profile.dscrCushionText')}
-          </p>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-xs font-bold text-neutral-950 dark:text-neutral-50 mb-1">
+              <Badge variant="success" size="xs" dot>
+                {t('profile.dscrCushionTitle')}
+              </Badge>
+            </div>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              {t('profile.dscrCushionText')}
+            </p>
+          </div>
         </div>
 
-        <div className="p-4 rounded-xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40">
-          <div className="flex items-center gap-2 text-xs font-bold text-indigo-800 dark:text-indigo-300 mb-1">
-            <Lightbulb className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-            <span>{t('profile.boostScoreTitle')}</span>
+        <div className="p-4 rounded-xl bg-primary-bg dark:bg-primary-bg-dark border border-primary-border dark:border-primary-border-dark flex items-start gap-3">
+          <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/10 text-primary dark:text-primary shrink-0 mt-0.5">
+            <Lightbulb className="w-4 h-4" />
           </div>
-          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-            {t('profile.boostScoreText')}
-          </p>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-xs font-bold text-neutral-950 dark:text-neutral-50 mb-1">
+              <Badge variant="primary" size="xs" dot>
+                {t('profile.boostScoreTitle')}
+              </Badge>
+            </div>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              {t('profile.boostScoreText')}
+            </p>
+          </div>
         </div>
       </div>
     </Card>

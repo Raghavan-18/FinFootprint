@@ -178,14 +178,14 @@ export function Login({ onNavigate }) {
 
         {/* Remember Me & Forgot Password */}
         <div className="flex items-center justify-between pt-1 text-xs sm:text-sm">
-          <label className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+          <label className="inline-flex items-center gap-2 text-neutral-600 dark:text-neutral-400 cursor-pointer select-none">
             <input
               type="checkbox"
               name="rememberMe"
               checked={formData.rememberMe}
               onChange={handleInputChange}
               disabled={isSubmitting || isGoogleSubmitting}
-              className="w-4 h-4 rounded-md border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-500 dark:focus:ring-offset-slate-900 bg-white dark:bg-slate-800 cursor-pointer"
+              className="w-4 h-4 rounded-md border-neutral-300 dark:border-neutral-700 text-indigo-600 focus:ring-indigo-500 dark:focus:ring-offset-neutral-900 bg-white dark:bg-neutral-800 cursor-pointer"
             />
             <span>{t('auth.login.rememberMe')}</span>
           </label>
@@ -224,7 +224,7 @@ export function Login({ onNavigate }) {
       />
 
       {/* Footer link to sign up */}
-      <div className="mt-8 text-center text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+      <div className="mt-8 text-center text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
         <span>{t('auth.login.noAccount')} </span>
         <button
           type="button"

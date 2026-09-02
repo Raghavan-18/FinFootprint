@@ -223,14 +223,14 @@ export function Signup({ onNavigate }) {
 
         {/* Terms Agreement Checkbox */}
         <div className="pt-1">
-          <label className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+          <label className="flex items-start gap-2.5 text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 cursor-pointer select-none">
             <input
               type="checkbox"
               name="agreeTerms"
               checked={formData.agreeTerms}
               onChange={handleInputChange}
               disabled={isSubmitting || isGoogleSubmitting}
-              className="mt-0.5 w-4 h-4 rounded-md border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-500 dark:focus:ring-offset-slate-900 bg-white dark:bg-slate-800 cursor-pointer shrink-0"
+              className="mt-0.5 w-4 h-4 rounded-md border-neutral-300 dark:border-neutral-700 text-indigo-600 focus:ring-indigo-500 dark:focus:ring-offset-neutral-900 bg-white dark:bg-neutral-800 cursor-pointer shrink-0"
             />
             <span className="leading-snug">
               {t('auth.signup.terms')}
@@ -268,7 +268,7 @@ export function Signup({ onNavigate }) {
       />
 
       {/* Footer link to sign in */}
-      <div className="mt-8 text-center text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+      <div className="mt-8 text-center text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
         <span>{t('auth.signup.haveAccount')} </span>
         <button
           type="button"

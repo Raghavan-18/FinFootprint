@@ -19,7 +19,7 @@ export function AuthHeader({ title, subtitle, showBadge = false }) {
         <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-lg shadow-indigo-500/25 ring-4 ring-indigo-500/10">
           F
         </div>
-        <span className="font-extrabold text-xl sm:text-2xl text-slate-900 dark:text-white tracking-tight">
+        <span className="font-extrabold text-xl sm:text-2xl text-neutral-900 dark:text-white tracking-tight">
           {t('common.appName')}
         </span>
       </div>
@@ -32,13 +32,13 @@ export function AuthHeader({ title, subtitle, showBadge = false }) {
       )}
 
       {/* Main Page Title */}
-      <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+      <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
         {title}
       </h1>
 
       {/* Descriptive Subtitle */}
       {subtitle && (
-        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-2 max-w-sm leading-relaxed">
+        <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 mt-2 max-w-sm leading-relaxed">
           {subtitle}
         </p>
       )}

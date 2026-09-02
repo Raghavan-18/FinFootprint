@@ -1,9 +1,12 @@
 import Card from '../common/Card';
+import Badge from '../common/Badge';
 import { ShieldAlert, Check } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable BehaviourSummary component for Lender Underwriting with localization
+ * Reusable BehaviourSummary component for Lender Underwriting with localization — FinFootprint v2 Design System
+ *
+ * Uses warm slate surfaces, semantic colored backgrounds.
  *
  * @param {Object} props
  * @param {Object} props.report
@@ -29,23 +32,20 @@ export function BehaviourSummary({ report, className = '' }) {
   const mitigants = isTamil ? defaultMitigantsTamil : report.riskMitigants;
 
   return (
-    <Card
-      title={t('lenderReport.behavioralTitle')}
-      subtitle={t('lenderReport.behavioralSubtitle')}
-      className={className}
-    >
+    <Card variant="default" padding="lg" className={className}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Strengths */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 dark:text-emerald-400">
-            <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span>{t('lenderReport.keyStrengths')}</span>
+          <div className="flex items-center gap-2 text-xs font-bold text-neutral-950 dark:text-neutral-50">
+            <Badge variant="success" size="xs" icon={<Check className="w-3.5 h-3.5" />}>
+              {t('lenderReport.keyStrengths')}
+            </Badge>
           </div>
           <div className="space-y-2">
             {strengths?.map((str, idx) => (
               <div
                 key={idx}
-                className="p-3 rounded-xl bg-emerald-50/40 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 text-xs text-slate-700 dark:text-slate-300 leading-relaxed"
+                className="p-3 rounded-xl bg-verified-bg dark:bg-verified-bg-dark border border-verified-border dark:border-verified-border-dark text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed"
               >
                 {str}
               </div>
@@ -55,15 +55,16 @@ export function BehaviourSummary({ report, className = '' }) {
 
         {/* Risk Factors & Mitigants */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-xs font-bold text-indigo-800 dark:text-indigo-400">
-            <ShieldAlert className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
-            <span>{t('lenderReport.riskMitigants')}</span>
+          <div className="flex items-center gap-2 text-xs font-bold text-neutral-950 dark:text-neutral-50">
+            <Badge variant="primary" size="xs" icon={<ShieldAlert className="w-3.5 h-3.5" />}>
+              {t('lenderReport.riskMitigants')}
+            </Badge>
           </div>
           <div className="space-y-2">
             {mitigants?.map((mit, idx) => (
               <div
                 key={idx}
-                className="p-3 rounded-xl bg-indigo-50/40 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/30 text-xs text-slate-700 dark:text-slate-300 leading-relaxed"
+                className="p-3 rounded-xl bg-primary-bg dark:bg-primary-bg-dark border border-primary-border dark:border-primary-border-dark text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed"
               >
                 {mit}
               </div>

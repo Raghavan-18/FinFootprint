@@ -4,7 +4,13 @@ import Tooltip from '../common/Tooltip';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable EvidenceBadge component with automatic localization
+ * Reusable EvidenceBadge component with automatic localization — FinFootprint v2 Design System
+ *
+ * Variants use design system semantic colors:
+ * - VERIFIED: Verified green (bank-grade)
+ * - CORROBORATED: Corroborated blue (cross-referenced)
+ * - SELF_DECLARED: Turmeric (daily commerce, pending)
+ * - MISMATCH: Terracotta/red (discrepancy)
  *
  * @param {Object} props
  * @param {'VERIFIED'|'CORROBORATED'|'SELF_DECLARED'|'MISMATCH'|string} props.status

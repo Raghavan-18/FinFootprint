@@ -21,11 +21,11 @@ export function ReportSection({
     <div className={`space-y-3 ${className}`}>
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-base font-bold text-slate-900 dark:text-white uppercase tracking-wider text-xs">
+          <h3 className="text-base font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-xs">
             {title}
           </h3>
           {subtitle && (
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
               {subtitle}
             </p>
           )}

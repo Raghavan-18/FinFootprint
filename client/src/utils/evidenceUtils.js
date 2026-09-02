@@ -1,5 +1,11 @@
 /**
- * Evidence tier definitions and helper configurations
+ * Evidence tier definitions and helper configurations — FinFootprint v2 Design System
+ *
+ * Colors now reference the design system semantic tokens:
+ * - VERIFIED: Verified green (emerald-based)
+ * - CORROBORATED: Corroborated blue (indigo-based)
+ * - SELF_DECLARED: Turmeric/amber (commerce warmth)
+ * - MISMATCH: Terracotta/red (discrepancy alert)
  */
 export const EVIDENCE_STATUSES = {
   VERIFIED: 'VERIFIED',
@@ -15,10 +21,11 @@ export const EVIDENCE_CONFIG = {
     shortLabel: 'Verified',
     description: 'Confirmed by direct digital trail (Bank API, AA, GSTN, or direct payment gateway).',
     confidenceScore: 98,
-    badgeBg: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
-    dotBg: 'bg-emerald-500',
+    // Uses CSS variables: bg-verified-bg, text-verified, border-verified-border
+    badgeBg: 'bg-verified-bg dark:bg-verified-bg-dark text-verified dark:text-verified border-verified-border dark:border-verified-border-dark',
+    dotBg: 'bg-verified',
     iconName: 'ShieldCheck',
-    color: 'emerald',
+    color: 'verified',
     trustLevel: 'High Trust (Grade A)',
   },
   CORROBORATED: {
@@ -27,10 +34,11 @@ export const EVIDENCE_CONFIG = {
     shortLabel: 'Corroborated',
     description: 'Cross-verified through indirect proofs like SMS receipts, UPI counterparty matching, or client invoices.',
     confidenceScore: 82,
-    badgeBg: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30',
-    dotBg: 'bg-blue-500',
+    // Uses CSS variables: bg-corroborated-bg, text-corroborated, border-corroborated-border
+    badgeBg: 'bg-corroborated-bg dark:bg-corroborated-bg-dark text-corroborated dark:text-corroborated border-corroborated-border dark:border-corroborated-border-dark',
+    dotBg: 'bg-corroborated',
     iconName: 'CheckCheck',
-    color: 'blue',
+    color: 'corroborated',
     trustLevel: 'Moderate Trust (Grade B+)',
   },
   SELF_DECLARED: {
@@ -39,10 +47,11 @@ export const EVIDENCE_CONFIG = {
     shortLabel: 'Self Declared',
     description: 'Declared by the user with manual inputs; awaiting supporting digital proofs or corroborating transactions.',
     confidenceScore: 50,
-    badgeBg: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30',
-    dotBg: 'bg-amber-500',
+    // Uses CSS variables: bg-self-declared-bg, text-self-declared, border-self-declared-border
+    badgeBg: 'bg-self-declared-bg dark:bg-self-declared-bg-dark text-self-declared dark:text-self-declared border-self-declared-border dark:border-self-declared-border-dark',
+    dotBg: 'bg-turmeric-500',
     iconName: 'FileText',
-    color: 'amber',
+    color: 'turmeric',
     trustLevel: 'Unverified (Grade C)',
   },
   MISMATCH: {
@@ -51,10 +60,11 @@ export const EVIDENCE_CONFIG = {
     shortLabel: 'Mismatch',
     description: 'Inconsistency detected between stated records and financial activity or counterparty statements.',
     confidenceScore: 20,
-    badgeBg: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30',
-    dotBg: 'bg-rose-500',
+    // Uses CSS variables: bg-mismatch-bg, text-mismatch, border-mismatch-border
+    badgeBg: 'bg-mismatch-bg dark:bg-mismatch-bg-dark text-mismatch dark:text-mismatch border-mismatch-border dark:border-mismatch-border-dark',
+    dotBg: 'bg-mismatch',
     iconName: 'AlertTriangle',
-    color: 'rose',
+    color: 'mismatch',
     trustLevel: 'High Risk (Grade F)',
   },
 };

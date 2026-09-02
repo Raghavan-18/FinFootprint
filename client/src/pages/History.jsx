@@ -98,7 +98,7 @@ export function History({
 
       {/* Transaction List */}
       <div className="space-y-3">
-        <div className="flex justify-between items-center px-1 text-xs text-slate-500 font-medium">
+        <div className="flex justify-between items-center px-1 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
           <span>{t('history.showingRecords', { count: filteredTransactions.length })}</span>
           <span className="hidden sm:inline">{t('history.clickToInspect')}</span>
         </div>

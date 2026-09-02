@@ -14,7 +14,9 @@ import { getEvidenceConfig } from '../../utils/evidenceUtils';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable TransactionDetails view component with localization
+ * Reusable TransactionDetails view component with localization — FinFootprint v2 Design System
+ *
+ * Uses warm slate surfaces, semantic tier colors, indigo accents.
  *
  * @param {Object} props
  * @param {Object} props.transaction
@@ -44,17 +46,17 @@ export function TransactionDetails({ transaction }) {
   return (
     <div className="space-y-6">
       {/* Top Header & Amount Banner */}
-      <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200/80 dark:border-neutral-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
             {isIncome
               ? t('transactions.incomeTransaction')
               : t('transactions.expenseTransaction')}
           </span>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-1">
+          <h3 className="text-xl sm:text-2xl font-bold text-neutral-950 dark:text-neutral-50 mt-1">
             {transaction.title}
           </h3>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-neutral-500 mt-1">
             {t('transactions.recordedOn')} {formatDate(transaction.date, { format: 'long' })}
           </p>
         </div>
@@ -62,7 +64,7 @@ export function TransactionDetails({ transaction }) {
         <div className="text-left sm:text-right">
           <p
             className={`text-2xl sm:text-3xl font-extrabold ${
-              isIncome ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-900 dark:text-slate-100'
+              isIncome ? 'text-verified dark:text-verified' : 'text-neutral-950 dark:text-neutral-50'
             }`}
           >
             {isIncome ? '+' : '-'}
@@ -75,20 +77,20 @@ export function TransactionDetails({ transaction }) {
       </div>
 
       {/* System Evidence Assessment & Confidence Rating Box */}
-      <div className="p-4 rounded-xl border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50/40 dark:bg-indigo-950/30 space-y-2">
+      <div className="p-4 rounded-xl border border-primary-border dark:border-primary-border-dark bg-primary-bg dark:bg-primary-bg-dark space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-            <span className="text-xs font-bold text-slate-900 dark:text-white">
+            <ShieldCheck className="w-4 h-4 text-primary dark:text-primary" />
+            <span className="text-xs font-bold text-neutral-950 dark:text-neutral-50">
               {t('activity.evidenceStatusSystemAssessed')}: {t(`evidence.statuses.${normalizedStatus}`) || config.label}
             </span>
           </div>
-          <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+          <span className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
             {transaction.confidenceScore || config.confidenceScore}% {t('transactions.confidence')}
           </span>
         </div>
-        <div className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
-          <p className="font-semibold text-slate-800 dark:text-slate-200">
+        <div className="text-xs text-neutral-700 dark:text-neutral-300 space-y-1">
+          <p className="font-semibold text-neutral-950 dark:text-neutral-50">
             {t('transactions.whyAssessment')}:
           </p>
           <p className="leading-relaxed">
@@ -96,8 +98,8 @@ export function TransactionDetails({ transaction }) {
           </p>
         </div>
         {transaction.evidenceType && (
-          <div className="pt-2 border-t border-indigo-100 dark:border-indigo-900/40 text-xs text-slate-500 flex items-center gap-1.5">
-            <span className="font-medium text-slate-700 dark:text-slate-300">
+          <div className="pt-2 border-t border-primary-border dark:border-primary-border-dark text-xs text-neutral-500 flex items-center gap-1.5">
+            <span className="font-medium text-neutral-700 dark:text-neutral-300">
               {t('evidence.sourceTrail')}:
             </span>
             <span>{transaction.evidenceType}</span>
@@ -107,47 +109,47 @@ export function TransactionDetails({ transaction }) {
 
       {/* Metadata Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-        <div className="p-3.5 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800">
-          <span className="text-slate-500 flex items-center gap-1.5 mb-1">
+        <div className="p-3.5 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800">
+          <span className="text-neutral-500 flex items-center gap-1.5 mb-1">
             <User className="w-3.5 h-3.5" /> {t('transactions.counterpartyEntity')}
           </span>
-          <span className="font-semibold text-slate-900 dark:text-white">
+          <span className="font-semibold text-neutral-950 dark:text-neutral-50">
             {transaction.counterparty || t('common.notSpecified')}
           </span>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800">
-          <span className="text-slate-500 flex items-center gap-1.5 mb-1">
+        <div className="p-3.5 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800">
+          <span className="text-neutral-500 flex items-center gap-1.5 mb-1">
             <CreditCard className="w-3.5 h-3.5" /> {t('activity.paymentMethodLabel')}
           </span>
-          <span className="font-semibold text-slate-900 dark:text-white">
+          <span className="font-semibold text-neutral-950 dark:text-neutral-50">
             {paymentMethodLabel}
           </span>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800">
-          <span className="text-slate-500 flex items-center gap-1.5 mb-1">
+        <div className="p-3.5 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800">
+          <span className="text-neutral-500 flex items-center gap-1.5 mb-1">
             <Hash className="w-3.5 h-3.5" /> {t('transactions.referenceUtr')}
           </span>
-          <span className="font-mono font-medium text-slate-800 dark:text-slate-200">
+          <span className="font-mono font-medium text-neutral-800 dark:text-neutral-200">
             {transaction.reference || transaction.referenceId || t('common.na')}
           </span>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800">
-          <span className="text-slate-500 flex items-center gap-1.5 mb-1">
+        <div className="p-3.5 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800">
+          <span className="text-neutral-500 flex items-center gap-1.5 mb-1">
             <Layers className="w-3.5 h-3.5" /> {t('transactions.category')}
           </span>
-          <span className="font-semibold text-slate-900 dark:text-white">
+          <span className="font-semibold text-neutral-950 dark:text-neutral-50">
             {categoryLabel}
           </span>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 sm:col-span-2">
-          <span className="text-slate-500 flex items-center gap-1.5 mb-1">
+        <div className="p-3.5 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800 sm:col-span-2">
+          <span className="text-neutral-500 flex items-center gap-1.5 mb-1">
             <FileCheck2 className="w-3.5 h-3.5" /> {t('transactions.supportingProofDocument')}
           </span>
-          <span className="font-medium text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
+          <span className="font-medium text-primary dark:text-primary flex items-center gap-1">
             {transaction.proofFileName || transaction.proofDocument || t('transactions.noProofAttached')}
             {(transaction.proofFileName || transaction.proofDocument) && <ExternalLink className="w-3 h-3" />}
           </span>
@@ -156,11 +158,11 @@ export function TransactionDetails({ transaction }) {
 
       {/* Notes / Description */}
       {transaction.notes && (
-        <div className="p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800">
-          <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+        <div className="p-4 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800">
+          <h4 className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1">
             {t('transactions.notesAuditLog')}
           </h4>
-          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
             {transaction.notes}
           </p>
         </div>
@@ -168,17 +170,17 @@ export function TransactionDetails({ transaction }) {
 
       {/* Additional Key-Value Metadata */}
       {transaction.metadata && Object.keys(transaction.metadata).length > 0 && (
-        <div className="p-4 rounded-xl border border-slate-100 dark:border-slate-800">
-          <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
+        <div className="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800">
+          <h4 className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
             {t('transactions.extendedMetadata')}
           </h4>
           <div className="space-y-1.5 text-xs">
             {Object.entries(transaction.metadata).map(([key, value]) => (
-              <div key={key} className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/60 last:border-0">
-                <span className="text-slate-500 capitalize">
+              <div key={key} className="flex justify-between py-1 border-b border-neutral-200 dark:border-neutral-800/60 last:border-0">
+                <span className="text-neutral-500 capitalize">
                   {key.replace(/([A-Z])/g, ' $1')}
                 </span>
-                <span className="font-medium text-slate-800 dark:text-slate-200">
+                <span className="font-medium text-neutral-800 dark:text-neutral-200">
                   {String(value)}
                 </span>
               </div>

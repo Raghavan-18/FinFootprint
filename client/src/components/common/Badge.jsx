@@ -1,9 +1,16 @@
-
 /**
- * Reusable Badge component for tags, status indicators, and micro-labels.
+ * Reusable Badge component for tags, status indicators, and micro-labels — FinFootprint v2 Design System
+ *
+ * Variants aligned with evidence tiers + brand:
+ * - primary: Indigo (institutional trust)
+ * - success: Verified green (evidence VERIFIED)
+ * - warning: Turmeric/Amber (evidence SELF_DECLARED)
+ * - danger: Mismatch red (evidence MISMATCH)
+ * - info: Corroborated blue (evidence CORROBORATED)
+ * - neutral: Warm slate (neutral)
  *
  * @param {Object} props
- * @param {'slate'|'indigo'|'emerald'|'blue'|'amber'|'rose'|'purple'} [props.variant='slate']
+ * @param {'primary'|'success'|'warning'|'danger'|'info'|'neutral'} [props.variant='neutral']
  * @param {'sm'|'md'|'lg'} [props.size='sm']
  * @param {boolean} [props.dot=false]
  * @param {React.ReactNode} [props.icon]
@@ -12,7 +19,7 @@
  */
 export function Badge({
   children,
-  variant = 'slate',
+  variant = 'neutral',
   size = 'sm',
   dot = false,
   icon = null,
@@ -26,35 +33,50 @@ export function Badge({
   };
 
   const variantStyles = {
-    slate: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700',
-    indigo: 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60',
-    emerald: 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60',
-    blue: 'bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/60',
-    amber: 'bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60',
-    rose: 'bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60',
-    purple: 'bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60',
+    // Primary: Indigo — institutional trust, ledger ink
+    primary:
+      'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60',
+
+    // Success: Verified green — evidence tier VERIFIED
+    success:
+      'bg-verified-bg dark:bg-verified-bg-dark text-verified dark:text-verified border-verified-border dark:border-verified-border-dark',
+
+    // Warning: Turmeric/Amber — evidence tier SELF_DECLARED
+    warning:
+      'bg-self-declared-bg dark:bg-self-declared-bg-dark text-self-declared dark:text-self-declared border-self-declared-border dark:border-self-declared-border-dark',
+
+    // Danger: Mismatch red — evidence tier MISMATCH
+    danger:
+      'bg-mismatch-bg dark:bg-mismatch-bg-dark text-mismatch dark:text-mismatch border-mismatch-border dark:border-mismatch-border-dark',
+
+    // Info: Corroborated blue — evidence tier CORROBORATED
+    info:
+      'bg-corroborated-bg dark:bg-corroborated-bg-dark text-corroborated dark:text-corroborated border-corroborated-border dark:border-corroborated-border-dark',
+
+    // Neutral: Warm slate — neutral
+    neutral:
+      'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700',
   };
 
   const dotStyles = {
-    slate: 'bg-slate-400',
-    indigo: 'bg-indigo-500',
-    emerald: 'bg-emerald-500',
-    blue: 'bg-blue-500',
-    amber: 'bg-amber-500',
-    rose: 'bg-rose-500',
-    purple: 'bg-purple-500',
+    primary: 'bg-indigo-500',
+    success: 'bg-verified',
+    warning: 'bg-turmeric-500',
+    danger: 'bg-mismatch',
+    info: 'bg-corroborated',
+    neutral: 'bg-neutral-400',
   };
 
   return (
     <span
       className={`inline-flex items-center leading-none select-none ${sizeStyles[size] || sizeStyles.sm} ${
-        variantStyles[variant] || variantStyles.slate
+        variantStyles[variant] || variantStyles.neutral
       } ${className}`}
       {...rest}
     >
       {dot && (
         <span
-          className={`w-1.5 h-1.5 rounded-full shrink-0 ${dotStyles[variant] || 'bg-slate-400'}`}
+          className={`w-1.5 h-1.5 rounded-full shrink-0 ${dotStyles[variant] || dotStyles.neutral}`}
         />
       )}
       {icon && <span className="shrink-0">{icon}</span>}

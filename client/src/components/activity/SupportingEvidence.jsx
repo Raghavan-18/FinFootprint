@@ -4,21 +4,11 @@ import ProofUpload from './ProofUpload';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /**
- * Reusable SupportingEvidence Section Component
+ * Reusable SupportingEvidence Section Component — FinFootprint v2 Design System
  *
  * Collects payment channel, conditional transaction / UTR reference,
  * optional invoice number, and optional supporting document proof.
- *
- * @param {Object} props
- * @param {string} props.paymentMethod
- * @param {Function} props.onPaymentMethodChange
- * @param {string} props.reference
- * @param {Function} props.onReferenceChange
- * @param {string} props.invoiceNumber
- * @param {Function} props.onInvoiceNumberChange
- * @param {string|null} props.proofFileName
- * @param {Function} props.onProofFileNameChange
- * @param {string} [props.className='']
+ * Uses neutral warm components from v2 DS.
  */
 export function SupportingEvidence({
   paymentMethod = 'CASH',
@@ -36,11 +26,11 @@ export function SupportingEvidence({
   return (
     <div className={`space-y-5 ${className}`}>
       {/* Section Header */}
-      <div className="pb-3 border-b border-slate-100 dark:border-slate-800">
-        <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+      <div className="pb-3 border-b border-neutral-200 dark:border-neutral-800/80">
+        <h3 className="text-sm font-bold text-neutral-950 dark:text-neutral-50 uppercase tracking-wider">
           {t('activity.supportingEvidenceTitle')}
         </h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
           {t('activity.supportingEvidenceSubtitle')}
         </p>
       </div>
@@ -60,7 +50,7 @@ export function SupportingEvidence({
 
       {/* 3. Optional Invoice Number (Separate from payment reference) */}
       <div>
-        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">
           {t('activity.invoiceNumberLabel')}
         </label>
         <input
@@ -68,9 +58,9 @@ export function SupportingEvidence({
           placeholder={t('activity.invoiceNumberPlaceholder')}
           value={invoiceNumber}
           onChange={(e) => onInvoiceNumberChange && onInvoiceNumberChange(e.target.value)}
-          className="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 font-mono transition-all"
+          className="w-full px-3.5 py-2.5 text-sm bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-neutral-950 dark:text-neutral-50 font-mono placeholder-neutral-400 transition-colors"
         />
-        <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">
+        <p className="text-[11px] text-neutral-500 mt-1">
           {t('activity.invoiceNumberHelper')}
         </p>
       </div>

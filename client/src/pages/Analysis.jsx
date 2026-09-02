@@ -131,10 +131,10 @@ export function Analysis({
           {/* Grid of Key Metrics */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+              <h3 className="text-sm font-bold text-neutral-950 dark:text-neutral-50 uppercase tracking-wider">
                 {t('analysis.corePillars')}
               </h3>
-              <span className="text-xs text-slate-500">
+              <span className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
                 {t('analysis.predictiveSignals')}
               </span>
             </div>
@@ -150,10 +150,10 @@ export function Analysis({
           {anomalies.length > 0 && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                <h3 className="text-sm font-bold text-neutral-950 dark:text-neutral-50 uppercase tracking-wider">
                   {t('analysis.anomalySectionTitle')}
                 </h3>
-                <span className="text-xs text-rose-500 font-semibold">
+                <span className="text-xs text-danger dark:text-danger font-semibold">
                   {t('analysis.flaggedReview', { count: anomalies.length })}
                 </span>
               </div>

@@ -117,7 +117,7 @@ export function ForgotPassword({ onNavigate }) {
               type="button"
               onClick={() => onNavigate && onNavigate('login')}
               disabled={isSubmitting}
-              className="inline-flex items-center gap-2 font-bold text-xs sm:text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 font-bold text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>{t('auth.forgotPassword.backToSignIn')}</span>
@@ -131,16 +131,16 @@ export function ForgotPassword({ onNavigate }) {
             <CheckCircle2 className="w-8 h-8" />
           </div>
 
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+          <h2 className="text-2xl font-bold text-neutral-900 dark:text-white tracking-tight">
             {t('auth.forgotPassword.checkEmail')}
           </h2>
 
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 max-w-sm mx-auto leading-relaxed">
+          <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2 max-w-sm mx-auto leading-relaxed">
             {t('auth.forgotPassword.checkEmailSubtitle')}
           </p>
 
-          <div className="my-5 p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-xs font-mono text-slate-800 dark:text-slate-200 break-all">
-            <span className="text-slate-400 font-sans block mb-0.5">{t('auth.forgotPassword.emailSentTo')}</span>
+          <div className="my-5 p-3.5 rounded-xl bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/80 text-xs font-mono text-neutral-800 dark:text-neutral-200 break-all">
+            <span className="text-neutral-400 font-sans block mb-0.5">{t('auth.forgotPassword.emailSentTo')}</span>
             <strong>{email}</strong>
           </div>
 
@@ -159,7 +159,7 @@ export function ForgotPassword({ onNavigate }) {
               onClick={() => {
                 setIsSubmitted(false);
               }}
-              className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-semibold text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>{t('auth.forgotPassword.resendLink')}</span>
