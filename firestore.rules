@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User profile document: users/{userId}
+    // Only the authenticated user whose UID matches userId has access.
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // Subcollection for financial transactions: users/{userId}/financialActivities/{activityId}
+      match /financialActivities/{activityId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Optional subcollection for user analysis: users/{userId}/analysis/{analysisId}
+      match /analysis/{analysisId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Any nested user-scoped documents
+      match /{document=**} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}

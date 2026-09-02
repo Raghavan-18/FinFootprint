@@ -457,8 +457,6 @@ def health_check():
     return {
         "status": "ok",
         "service": "FinFootprint API",
-        "version": "0.1.0",
-        "dataSource": "SYNTHETIC",
     }
 
 
