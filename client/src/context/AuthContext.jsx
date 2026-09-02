@@ -1,5 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
+
+/**
+ * TEMPORARY DEMO MODE ACTIVE
+ * Local demo authentication powered by localAuthService.
+ *
+ * To re-enable Firebase Authentication in future production:
+ * 1. Set VITE_USE_FIREBASE=true in your environment variables.
+ * 2. Switch the import below from './localAuthService' to './authService'.
+ */
 import {
   loginUser,
   signupUser,
@@ -8,7 +17,7 @@ import {
   loginWithGoogle as loginWithGoogleService,
   onAuthStateChangedListener,
   mapAuthErrorToKey,
-} from '../services/authService';
+} from '../services/localAuthService';
 
 export const AuthContext = createContext(null);
 

@@ -3,7 +3,8 @@ import { Sparkles, Globe, LogOut, ShieldCheck } from 'lucide-react';
 import FinancialProfileForm from '../components/profile/FinancialProfileForm';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAuth } from '../context/AuthContext';
-import firestoreService from '../services/firestoreService';
+// TEMPORARY DEMO MODE: Switch to '../services/firestoreService' for production Firebase
+import dataService from '../services/localDataService';
 
 /**
  * Dedicated Financial Profile Setup Page for New Users / Onboarding
@@ -29,7 +30,7 @@ export function FinancialProfilePage({
 
     setIsSubmitting(true);
     try {
-      const updatedProfile = await firestoreService.saveFinancialProfile(user.uid, formData);
+      const updatedProfile = await dataService.saveFinancialProfile(user.uid, formData);
       if (onComplete) {
         await onComplete(updatedProfile);
       } else if (onNavigate) {

@@ -138,6 +138,26 @@ export function Login({ onNavigate }) {
         subtitle={t('auth.login.subtitle')}
       />
 
+      {/* Demo Credentials Quick Fill Banner */}
+      <div className="mb-4 p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-xs flex items-center justify-between gap-2">
+        <span className="text-indigo-800 dark:text-indigo-200 font-medium">
+          {t('demo.demoCredentials')}
+        </span>
+        <button
+          type="button"
+          onClick={() =>
+            setFormData((prev) => ({
+              ...prev,
+              email: 'demo@finfootprint.local',
+              password: 'demo12345',
+            }))
+          }
+          className="px-2 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-[11px] shrink-0 transition-colors cursor-pointer"
+        >
+          {t('demo.fillDemo')}
+        </button>
+      </div>
+
       {/* General error message banner */}
       {generalError && (
         <div className="mb-6 p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs sm:text-sm flex items-center gap-2.5 animate-in fade-in duration-150">

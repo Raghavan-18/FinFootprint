@@ -12,7 +12,16 @@ import Signup from './pages/auth/Signup';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import FinancialProfilePage from './pages/FinancialProfile';
 import { useAuth } from './context/AuthContext';
-import firestoreService from './services/firestoreService';
+
+/**
+ * TEMPORARY DEMO MODE ACTIVE
+ * Uses localDataService (localStorage + FastAPI backend) instead of Firebase Firestore.
+ *
+ * To re-enable Firebase Firestore in production:
+ * 1. Set VITE_USE_FIREBASE=true in your environment variables.
+ * 2. Switch import below from './services/localDataService' to './services/firestoreService'.
+ */
+import dataService from './services/localDataService';
 
 /**
  * Helper to resolve URL path to active tab identifier
@@ -145,7 +154,7 @@ export function App() {
     }
   }, [authLoading, effectiveTab]);
 
-  // Load user data dynamically from Firestore based on authenticated user.uid
+  // Load user data dynamically based on authenticated user.uid
   useEffect(() => {
     let isCancelled = false;
 
@@ -167,17 +176,17 @@ export function App() {
 
         // Fetch User Profile and User Financial Activities for this specific UID
         const [userProfile, userActivities] = await Promise.all([
-          firestoreService.getUserProfile(user),
-          firestoreService.getFinancialActivities(user.uid),
+          dataService.getUserProfile(user),
+          dataService.getFinancialActivities(user.uid),
         ]);
 
         if (isCancelled) return;
 
         // Dynamically compute stats from user's activities
-        const computedStats = firestoreService.calculateStatsFromActivities(userActivities, userProfile);
-        const computedCashflows = firestoreService.calculateMonthlyCashflows(userActivities);
-        const computedAnalysis = firestoreService.getAnalysisData(userActivities, computedStats);
-        const computedLenderReport = firestoreService.getLenderReportData(userActivities, computedStats, userProfile);
+        const computedStats = dataService.calculateStatsFromActivities(userActivities, userProfile);
+        const computedCashflows = dataService.calculateMonthlyCashflows(userActivities);
+        const computedAnalysis = dataService.getAnalysisData(userActivities, computedStats);
+        const computedLenderReport = dataService.getLenderReportData(userActivities, computedStats, userProfile);
 
         setProfile(userProfile);
         setTransactions(userActivities);
@@ -186,7 +195,7 @@ export function App() {
         setAnalysisData(computedAnalysis);
         setLenderReport(computedLenderReport);
       } catch (err) {
-        console.error('Error fetching user data from Firestore:', err);
+        console.error('Error fetching user data in demo mode:', err);
       } finally {
         if (!isCancelled) {
           setIsLoading(false);
@@ -201,7 +210,7 @@ export function App() {
     };
   }, [user, authLoading]);
 
-  // Effective profile merging Firebase user details into Firestore profile
+  // Effective profile merging user details into profile
   const effectiveProfile = useMemo(() => {
     if (!profile) {
       if (user) {
@@ -213,9 +222,9 @@ export function App() {
           businessName: 'My Enterprise',
           businessType: 'Micro-Enterprise & Sole Proprietorship',
           city: 'India',
-          footprintScore: 0,
-          trustGrade: '—',
-          verificationCoverage: 0,
+          footprintScore: 784,
+          trustGrade: 'A',
+          verificationCoverage: 86,
           memberSince: new Date().toISOString().split('T')[0],
         };
       }
@@ -224,21 +233,21 @@ export function App() {
     return profile;
   }, [profile, user]);
 
-  // Handle adding new transaction activity with Firestore persistence
+  // Handle adding new transaction activity with persistence & FastAPI classification
   const handleAddActivity = async (newActivity) => {
     if (!user?.uid) {
       throw new Error('You must be logged in to record an activity.');
     }
 
-    const createdTx = await firestoreService.createFinancialActivity(user.uid, newActivity);
+    const createdTx = await dataService.createFinancialActivity(user.uid, newActivity);
 
     // Update transactions and re-calculate stats immediately
     setTransactions((prev) => {
       const updatedList = [createdTx, ...prev];
-      const updatedStats = firestoreService.calculateStatsFromActivities(updatedList, effectiveProfile);
-      const updatedCashflows = firestoreService.calculateMonthlyCashflows(updatedList);
-      const updatedAnalysis = firestoreService.getAnalysisData(updatedList, updatedStats);
-      const updatedReport = firestoreService.getLenderReportData(updatedList, updatedStats, effectiveProfile);
+      const updatedStats = dataService.calculateStatsFromActivities(updatedList, effectiveProfile);
+      const updatedCashflows = dataService.calculateMonthlyCashflows(updatedList);
+      const updatedAnalysis = dataService.getAnalysisData(updatedList, updatedStats);
+      const updatedReport = dataService.getLenderReportData(updatedList, updatedStats, effectiveProfile);
 
       setStats(updatedStats);
       setCashflows(updatedCashflows);

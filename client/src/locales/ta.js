@@ -66,6 +66,13 @@ export const ta = {
     primeBadge: 'பிரைம் (Prime)',
   },
 
+  demo: {
+    demoMode: 'டெமோ பயன்முறை',
+    demoCredentials: 'டெமோ உள்நுழைவு: demo@finfootprint.local / demo12345',
+    fillDemo: 'டெமோ கணக்கை நிரப்புக',
+    signedInLocally: 'உள்ளூரில் உள்நுழைந்துள்ளீர்கள் (டெமோ பயன்முறை)',
+  },
+
   navbar: {
     streamActive: 'கணக்கு ஒருங்கிணைப்பாளர் இணைப்பு நேரலையில் உள்ளது (AA Stream)',
     hdfcSync: 'HDFC இணைப்பு',

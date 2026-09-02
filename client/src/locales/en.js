@@ -65,6 +65,13 @@ export const en = {
     primeBadge: 'Prime',
   },
 
+  demo: {
+    demoMode: 'Demo Mode',
+    demoCredentials: 'Demo credentials: demo@finfootprint.local / demo12345',
+    fillDemo: 'Use Demo Account',
+    signedInLocally: 'Signed in locally (Demo Mode)',
+  },
+
   navbar: {
     streamActive: 'Account Aggregator Stream Active',
     hdfcSync: 'HDFC Sync',
